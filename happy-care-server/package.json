@@ -1,0 +1,32 @@
+{
+    "name": "happy-care-services",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "node ./src/bin/www.js",
+        "dev": "nodemon ./src/bin/www.js -e js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "bcrypt": "^5.0.1",
+        "chalk": "^4.1.2",
+        "dotenv": "^10.0.0",
+        "express": "^4.17.1",
+        "jsonwebtoken": "^8.5.1",
+        "lodash": "^4.17.21",
+        "moment": "^2.29.1",
+        "mongodb": "^4.1.2",
+        "mongoose": "^6.0.9",
+        "multer": "^1.4.3",
+        "rss-parser": "^3.12.0",
+        "socket.io": "^2.4.1",
+        "validator": "^13.7.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.13"
+    }
+}
