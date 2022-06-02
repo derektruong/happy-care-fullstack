@@ -27,12 +27,6 @@
       }
     ],
     // prevent eslint to complain about the "styles" variable being used before it was defined
-    "no-use-before-define": [
-      "error",
-      {
-        "variables": false
-      }
-    ],
     "prettier/prettier": [
       "error",
       {
@@ -56,6 +50,7 @@
     "class-methods-use-this": "off",
     "import/prefer-default-export": "off",
     "react/prop-types": "off",
+    "no-use-before-define": "off",
     "semi": ["error", "always"]
   }
 }

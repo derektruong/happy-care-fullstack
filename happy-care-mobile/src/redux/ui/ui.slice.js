@@ -1,18 +1,35 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ScreenName, UiStatus } from '../../api/common';
 
-const initState = { isCartShown: false, notification: null };
+const initialState = { currentScreen: ScreenName.login, notification: {} };
 
 const uiSlice = createSlice({
   name: 'ui',
-  initialState: initState,
+  initialState,
   reducers: {
-    toggleCart: (state) => {
-      state.isCartShown = !state.isCartShown;
+    navigateScreen: (state, action) => {
+      state.currentScreen = action.payload;
     },
 
-    showNotification: (state, action) => {
+    showSuccessUI: (state, action) => {
       state.notification = {
-        status: action.payload.status,
+        status: UiStatus.success,
+        title: action.payload.title,
+        message: action.payload.message,
+      };
+    },
+
+    showLoadingUI: (state, action) => {
+      state.notification = {
+        status: UiStatus.loading,
+        title: action.payload.title,
+        message: action.payload.message,
+      };
+    },
+
+    showErrorUI: (state, action) => {
+      state.notification = {
+        status: UiStatus.error,
         title: action.payload.title,
         message: action.payload.message,
       };
@@ -21,4 +38,4 @@ const uiSlice = createSlice({
 });
 
 export const uiActions = uiSlice.actions;
-export default uiSlice;
+export default uiSlice.reducer;

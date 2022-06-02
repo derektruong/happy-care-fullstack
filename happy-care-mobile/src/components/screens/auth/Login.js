@@ -1,101 +1,222 @@
+import { omit } from 'lodash';
+import * as validator from 'validator';
 import React, { useState, useEffect } from 'react';
+import {
+  Center,
+  Box,
+  Heading,
+  VStack,
+  FormControl,
+  Input,
+  Button,
+  Image,
+  Text,
+  Icon,
+} from 'native-base';
+import { Ionicons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { StyleSheet, View, Text, Image, TextInput, Alert } from 'react-native';
+import { uiActions, authActions } from '../../../redux/actions';
+import { authService } from '../../../redux/services';
 import { HCIcon } from '../../../assets/images';
-import { HCButton } from '../../layout';
-import { userActions } from '../../../redux/actions';
+import { AppName, ScreenName } from '../../../api/common';
+import SecureStoreHelper from '../../../api/helper/secure-store.helper';
 
 export const Login = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  const [usernameInput, setUsernameInput] = useState('');
-  const [ageInput, setAgeInput] = useState(0);
+  const { currentScreen } = useSelector((state) => state.ui);
+  const { loginCredentials } = useSelector((state) => state.auth);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errors, setErrors] = useState({});
 
-  const onLoginHandler = async () => {
-    if (usernameInput.length === 0 || ageInput.length === 0) {
-      Alert.alert('Warning', 'Please input your username', [
-        { text: 'OK', onPress: () => console.log('OK Pressed') },
-      ]);
-      return;
+  useEffect(() => {
+    async function checkAuthentication() {
+      const token = await SecureStoreHelper.getAuthBearerToken();
+      if (token) {
+        dispatch(authActions.setLoggedInStatus(!!token));
+        dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
+      } else {
+        setIsLoading(false);
+      }
     }
 
-    try {
-      dispatch(userActions.setUsername(usernameInput));
-      dispatch(userActions.setAge(ageInput));
-      navigation.navigate('Home');
-    } catch (error) {
-      console.log(error);
+    checkAuthentication();
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (currentScreen !== ScreenName.login) {
+      return navigation.navigate(currentScreen);
+    }
+  }, [currentScreen, navigation]);
+
+  const onFormChangeHandler = (type, value) => {
+    dispatch(
+      authActions.setLoginCredentials({
+        ...loginCredentials,
+        [type]: value,
+      })
+    );
+    setErrors(omit(errors, [type]));
+  };
+
+  const validateFormHandler = () => {
+    const { email: emailInput, password: passwordInput } = loginCredentials;
+
+    const email = emailInput && emailInput.trim();
+    const password = passwordInput && passwordInput.trim();
+
+    if (!email || (email && !validator.isEmail(email))) {
+      setErrors({
+        ...errors,
+        email: 'Email is invalid',
+      });
+      return false;
+    }
+
+    if (!password) {
+      setErrors({
+        ...errors,
+        password: 'Password is invalid',
+      });
+      return false;
+    }
+
+    return true;
+  };
+
+  const onSubmitHandler = () => {
+    const isFormValid = validateFormHandler();
+    if (isFormValid) {
+      dispatch(authService.login(loginCredentials));
     }
   };
 
+  const onRegisterHandler = () => {
+    dispatch(uiActions.navigateScreen(ScreenName.register));
+  };
+
   return (
-    <View style={styles.body}>
-      <View style={styles.container}>
-        <Image style={styles.logo} source={HCIcon.hc_icon_redux} />
-        <Text style={styles.text}>Async storage</Text>
-        <View style={styles.viewCredentialForm}>
-          <TextInput
-            style={styles.viewCredentialForm.textInput}
-            placeholder="Your username"
-            onChangeText={(value) => setUsernameInput(value)}
-          />
-          <TextInput
-            style={styles.viewCredentialForm.textInput}
-            placeholder="Your age"
-            secureTextEntry
-            onChangeText={(value) => setAgeInput(value)}
-          />
-          <HCButton
-            title="Login"
-            color="#20BF55"
-            style={styles.viewCredentialForm.button}
-            onPress={onLoginHandler}
-          />
-        </View>
-      </View>
-    </View>
+    <VStack bg="primary.100" alignItems="center" w="100%" h="100%" safeArea>
+      {isLoading && (
+        <Center mb="10" w="100%" h="100%">
+          <Image mb="2" size="md" source={HCIcon.hc_icon_health_care} alt="Healthcare logo" />
+        </Center>
+      )}
+      {!isLoading && (
+        <Box p="2" mt="8" w="90%" maxW="290">
+          <Center mb="10">
+            <Image mb="2" size="md" source={HCIcon.hc_icon_health_care} alt="Healthcare logo" />
+            <Heading
+              mb="4"
+              size="xl"
+              color="coolGray.800"
+              _dark={{
+                color: 'warmGray.50',
+              }}
+              fontWeight={600}
+            >
+              {AppName}
+            </Heading>
+            <Heading
+              color="coolGray.600"
+              _dark={{
+                color: 'warmGray.200',
+              }}
+              fontWeight="medium"
+              size="xs"
+            >
+              {'Chào mừng bạn đến với '}
+              <Heading
+                size="xs"
+                color="coolGray.800"
+                _dark={{
+                  color: 'warmGray.50',
+                }}
+                fontWeight={500}
+              >
+                {AppName}
+              </Heading>
+            </Heading>
+          </Center>
+          <VStack space={3}>
+            <FormControl isRequired>
+              <Input
+                _light={{
+                  bg: 'cyan.50',
+                }}
+                _dark={{
+                  bg: 'coolGray.800',
+                }}
+                _focus={{
+                  bg: 'muted.50',
+                }}
+                variant="rounded"
+                placeholder="Email"
+                value={loginCredentials.email}
+                InputLeftElement={
+                  <Icon as={<Ionicons name="person" />} size={5} ml="4" color="muted.400" />
+                }
+                onChangeText={(value) => onFormChangeHandler('email', value)}
+              />
+              {errors && errors.email && (
+                <FormControl.HelperText
+                  ml="1"
+                  _text={{
+                    fontSize: 'xs',
+                    color: 'red.500',
+                  }}
+                >
+                  {errors && errors.email}
+                </FormControl.HelperText>
+              )}
+            </FormControl>
+            <FormControl isRequired>
+              <Input
+                _light={{
+                  bg: 'cyan.50',
+                }}
+                _dark={{
+                  bg: 'coolGray.800',
+                }}
+                _focus={{
+                  bg: 'muted.50',
+                }}
+                variant="rounded"
+                type="password"
+                placeholder="Password"
+                value={loginCredentials.password}
+                InputLeftElement={
+                  <Icon as={<Ionicons name="key" />} size={5} ml="4" color="muted.400" />
+                }
+                onChangeText={(value) => onFormChangeHandler('password', value)}
+              />
+              {errors && errors.password && (
+                <FormControl.HelperText
+                  ml="1"
+                  _text={{
+                    fontSize: 'xs',
+                    color: 'red.500',
+                  }}
+                >
+                  {errors && errors.password}
+                </FormControl.HelperText>
+              )}
+            </FormControl>
+            <Button mt="2" borderRadius="3xl" colorScheme="blue" onPress={onSubmitHandler}>
+              <Text bold fontSize="md" color="primary.100">
+                Đăng nhập
+              </Text>
+            </Button>
+            <Text>
+              {'Chưa có tài khoản? '}
+              <Text fontSize="md" fontWeight={600} color="green.600" onPress={onRegisterHandler}>
+                Đăng ký
+              </Text>
+              {' ngay 🥰'}
+            </Text>
+          </VStack>
+        </Box>
+      )}
+    </VStack>
   );
 };
-
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: '#256EFF',
-  },
-  container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '10%',
-  },
-  text: {
-    fontSize: 30,
-    color: '#fff',
-  },
-  viewCredentialForm: {
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    margin: '30%',
-
-    textInput: {
-      backgroundColor: '#fff',
-      width: 300,
-      height: 50,
-      padding: 5,
-      marginTop: 20,
-      borderRadius: 10,
-      borderWidth: 1,
-    },
-
-    button: {
-      marginTop: 20,
-    },
-  },
-  logo: {
-    width: 100,
-    height: 100,
-    marginTop: 20,
-  },
-});

@@ -1,19 +1,25 @@
 import { omit } from 'lodash';
 import * as validator from 'validator';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Center, Box, Heading, VStack, FormControl, Input, Button, Image, Text } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
-import { authActions } from '../../../redux/actions';
-import { AuthService } from '../../../redux/services';
+import { uiActions, authActions } from '../../../redux/actions';
+import { authService } from '../../../redux/services';
 import { HCIcon } from '../../../assets/images';
-import { AppName } from '../../../api';
+import { AppName, ScreenName } from '../../../api/common';
 
-export const Register = () => {
+export const Register = ({ navigation }) => {
   const dispatch = useDispatch();
 
+  const { currentScreen } = useSelector((state) => state.ui);
   const { registerCredentials } = useSelector((state) => state.auth);
-  // const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    if (currentScreen !== ScreenName.register) {
+      navigation.navigate(currentScreen);
+    }
+  }, [currentScreen, navigation]);
 
   const onFormChangeHandler = (type, value) => {
     dispatch(
@@ -22,7 +28,6 @@ export const Register = () => {
         [type]: value,
       })
     );
-    // setFormData({ ...formData, [type]: value });
     setErrors(omit(errors, [type]));
   };
 
@@ -75,8 +80,12 @@ export const Register = () => {
   const onSubmitHandler = () => {
     const isFormValid = validateFormHandler();
     if (isFormValid) {
-      dispatch(AuthService.registerNewUser(registerCredentials));
+      dispatch(authService.registerNewUser(registerCredentials));
     }
+  };
+
+  const onNavigateLoginHandler = () => {
+    dispatch(uiActions.navigateScreen(ScreenName.login));
   };
 
   return (
@@ -104,13 +113,32 @@ export const Register = () => {
           fontWeight="medium"
           size="xs"
         >
-          Hãy đăng ký để có một sức khoẻ tốt hơn
+          {'Hãy đăng ký '}
+          <Heading
+            size="xs"
+            color="coolGray.800"
+            _dark={{
+              color: 'warmGray.50',
+            }}
+            fontWeight={500}
+          >
+            {AppName}
+          </Heading>
+          {' để có một sức khoẻ tốt hơn'}
         </Heading>
         <VStack space={3}>
           <FormControl isRequired>
             <FormControl.Label>Email</FormControl.Label>
             <Input
-              bg="primary.50"
+              _light={{
+                bg: 'muted.50',
+              }}
+              _dark={{
+                bg: 'coolGray.800',
+              }}
+              _focus={{
+                bg: 'cyan.50',
+              }}
               borderRadius="md"
               onChangeText={(value) => onFormChangeHandler('email', value)}
             />
@@ -129,7 +157,15 @@ export const Register = () => {
           <FormControl isRequired>
             <FormControl.Label>Password</FormControl.Label>
             <Input
-              bg="primary.50"
+              _light={{
+                bg: 'muted.50',
+              }}
+              _dark={{
+                bg: 'coolGray.800',
+              }}
+              _focus={{
+                bg: 'cyan.50',
+              }}
               type="password"
               borderRadius="md"
               onChangeText={(value) => onFormChangeHandler('password', value)}
@@ -149,7 +185,15 @@ export const Register = () => {
           <FormControl isRequired>
             <FormControl.Label>Confirm Password</FormControl.Label>
             <Input
-              bg="primary.50"
+              _light={{
+                bg: 'muted.50',
+              }}
+              _dark={{
+                bg: 'coolGray.800',
+              }}
+              _focus={{
+                bg: 'cyan.50',
+              }}
               type="password"
               borderRadius="md"
               onChangeText={(value) => onFormChangeHandler('confirmPassword', value)}
@@ -171,6 +215,13 @@ export const Register = () => {
               Đăng ký
             </Text>
           </Button>
+          <Text>
+            {'Đã có tài khoản? '}
+            <Text bold fontSize="md" color="green.600" onPress={onNavigateLoginHandler}>
+              Đăng nhập
+            </Text>
+            {' ngay 🙋‍♂️'}
+          </Text>
         </VStack>
       </Box>
     </VStack>

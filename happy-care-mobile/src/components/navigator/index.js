@@ -1,54 +1,44 @@
-import React from 'react';
+import { isEmpty } from 'lodash';
+import React, { useEffect } from 'react';
+import { useToast, Box } from 'native-base';
+import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StyleSheet } from 'react-native';
-import { Home, Login, Register } from '../screens';
+import AuthNavigation from './auth';
 
-const Stack = createStackNavigator();
+const MainNavigator = () => {
+  const { notification } = useSelector((state) => state.ui);
+  const toast = useToast();
 
-const MainNavigator = () => (
-  <NavigationContainer
-    initialRouteName="Home"
-    drawerPosition="left"
-    drawerType="front"
-    edgeWidth={100}
-    hideStatusBar={false}
-    overlayColor="#00000090"
-    drawerStyle={{
-      backgroundColor: '#F8F9FA',
-      width: 150,
-    }}
-  >
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Register"
-        component={Register}
-        options={{
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
-        name="Home"
-        component={Home}
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack.Navigator>
-  </NavigationContainer>
-);
+  useEffect(() => {
+    if (!isEmpty(notification)) {
+      toast.show({
+        render: () => {
+          if (notification.status === 'success') {
+            return (
+              <Box bg="emerald.500" px="2" py="1" rounded="sm" mb={5}>
+                {notification.message}
+              </Box>
+            );
+          }
 
-const styles = StyleSheet.create({
-  body: {
-    flex: 1,
-    flexDirection: 'column',
-    backgroundColor: '#f8f9fa',
-  },
-  container: {
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    margin: 20,
-  },
-});
+          if (notification.status === 'error') {
+            return (
+              <Box bg="red.500" px="2" py="1" rounded="sm" mb={5}>
+                {notification.message}
+              </Box>
+            );
+          }
+        },
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notification]);
+
+  return (
+    <NavigationContainer>
+      <AuthNavigation />
+    </NavigationContainer>
+  );
+};
 
 export default MainNavigator;
