@@ -22,3 +22,31 @@ export const UiStatus = Object.freeze({
   success: 'success',
   error: 'error',
 });
+
+export const SocketKey = Object.freeze({
+  Connect: 'connect',
+  Disconnect: 'disconnect',
+  ConnectError: 'connect_error',
+
+  // emit
+  Join: 'join',
+  GetUsersInApp: 'get-users-in-app',
+  GetDoctorsInApp: 'get-doctors-in-app',
+  GetMembersInApp: 'get-members-in-app',
+  GetNumberOfUsers: 'get-number-of-users',
+  GetNumberOfDoctors: 'get-number-of-doctors',
+  GetNumberOfMembers: 'get-number-of-members',
+  GetSocketRooms: 'get-socket-rooms',
+
+  GetDoctorsFromSpecRoom: 'get-doctor-from-spec-room',
+  JoinChatRoom: 'join-chat-room',
+  LeaveChatRoom: 'leave-chat-room',
+
+  SendMessage: 'send-message',
+  TypingMessage: 'typing-message',
+
+  // on
+  ReceiveMessage: 'receive-message',
+  ReceiveNewMessage: 'receive-new-message',
+  ReceiveTypingMessage: 'receive-typing-message',
+});
