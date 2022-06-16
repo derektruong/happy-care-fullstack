@@ -19,7 +19,8 @@ import { uiActions, authActions } from '../../../redux/actions';
 import { authService } from '../../../redux/services';
 import { HCIcon } from '../../../assets/images';
 import { AppName, ScreenName } from '../../../api/common';
-import SecureStoreHelper from '../../../api/helper/secure-store.helper';
+import { SecureStoreHelper, JwtHelper } from '../../../api/helper';
+import { socketService } from '../../../api/services';
 
 export const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -32,15 +33,20 @@ export const Login = ({ navigation }) => {
   useEffect(() => {
     async function checkAuthentication() {
       const token = await SecureStoreHelper.getAuthBearerToken();
+      if (!token || JwtHelper.isTokenExpired(token)) {
+        dispatch(uiActions.navigateScreen(ScreenName.login));
+        return;
+      }
+
       if (token) {
+        socketService.emitJoinApp({ token });
         dispatch(authActions.setLoggedInStatus(!!token));
         dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
-      } else {
-        setIsLoading(false);
       }
     }
 
     checkAuthentication();
+    setIsLoading(false);
   }, [dispatch]);
 
   useEffect(() => {

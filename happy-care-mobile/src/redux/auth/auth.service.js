@@ -1,7 +1,7 @@
 import { UserUrl, Role, ScreenName } from '../../api/common';
 import SecureStoreHelper from '../../api/helper/secure-store.helper';
 import { authActions, uiActions } from '../actions';
-import { httpService } from '../../api/services/http.service';
+import { httpService, socketService } from '../../api/services';
 
 class AuthService {
   static getInstance() {
@@ -55,15 +55,18 @@ class AuthService {
         const url = `${UserUrl}/login`;
         const res = await httpService.post(url, data, false);
 
-        console.log(res);
         if (res.success === true) {
           const token = res.data && res.data.token;
           SecureStoreHelper.setAuthBearerToken(token);
+
+          socketService.emitJoinApp({ token });
+
           dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
           dispatch(
             uiActions.showSuccessUI({
               title: 'Login success',
               message: 'Đăng nhập thành công',
+              position: 'top',
             })
           );
         } else {
@@ -71,6 +74,7 @@ class AuthService {
             uiActions.showErrorUI({
               title: 'Error',
               message: res.message,
+              position: 'bottom',
             })
           );
         }
@@ -79,6 +83,7 @@ class AuthService {
           uiActions.showErrorUI({
             title: 'Error',
             message: error.message,
+            position: 'bottom',
           })
         );
       }
@@ -89,6 +94,9 @@ class AuthService {
     return async (dispatch) => {
       try {
         SecureStoreHelper.deleteAuthBearerToken();
+
+        socketService.emitDisconnect();
+
         dispatch(
           authActions.setLogout({
             registerCredentials: {},
@@ -101,6 +109,7 @@ class AuthService {
           uiActions.showSuccessUI({
             title: 'Logout success',
             message: 'Đăng xuất thành công',
+            position: 'bottom',
           })
         );
       } catch (error) {
@@ -108,6 +117,7 @@ class AuthService {
           uiActions.showErrorUI({
             title: 'Error',
             message: error.message,
+            position: 'bottom',
           })
         );
       }
