@@ -16,8 +16,8 @@ class HttpService {
     };
   }
 
-  initAuthHeader() {
-    const token = SecureStoreHelper.getAuthBearerToken();
+  async initAuthHeader() {
+    const token = await SecureStoreHelper.getAuthBearerToken();
 
     return {
       Accept: 'application/json',
@@ -27,7 +27,7 @@ class HttpService {
   }
 
   async get(url, params, isAuthorized = true) {
-    const headers = isAuthorized ? this.initAuthHeader() : this.initBasicHeader();
+    const headers = isAuthorized ? await this.initAuthHeader() : this.initBasicHeader();
 
     const response = await fetch(`${url}?${convertParams(params)}`, {
       headers,
@@ -39,7 +39,7 @@ class HttpService {
   }
 
   async post(url, body, isAuthorized = true) {
-    const headers = isAuthorized ? this.initAuthHeader() : this.initBasicHeader();
+    const headers = isAuthorized ? await this.initAuthHeader() : this.initBasicHeader();
 
     const response = await fetch(url, {
       headers,
@@ -52,7 +52,7 @@ class HttpService {
   }
 
   async put(url, body, isAuthorized = true) {
-    const headers = isAuthorized ? this.initAuthHeader() : this.initBasicHeader();
+    const headers = isAuthorized ? await this.initAuthHeader() : this.initBasicHeader();
 
     const response = await fetch(url, {
       headers,
@@ -65,7 +65,7 @@ class HttpService {
   }
 
   async delete(url, isAuthorized = true) {
-    const headers = isAuthorized ? this.initAuthHeader() : this.initBasicHeader();
+    const headers = isAuthorized ? await this.initAuthHeader() : this.initBasicHeader();
 
     const response = await fetch(url, {
       headers,
