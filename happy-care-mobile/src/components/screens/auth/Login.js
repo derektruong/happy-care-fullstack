@@ -35,18 +35,19 @@ export const Login = ({ navigation }) => {
       const token = await SecureStoreHelper.getAuthBearerToken();
       if (!token || JwtHelper.isTokenExpired(token)) {
         dispatch(uiActions.navigateScreen(ScreenName.login));
+        setIsLoading(false);
         return;
       }
-
       if (token) {
         socketService.emitJoinApp({ token });
         dispatch(authActions.setLoggedInStatus(!!token));
         dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
+      } else {
+        setIsLoading(false);
       }
     }
 
     checkAuthentication();
-    setIsLoading(false);
   }, [dispatch]);
 
   useEffect(() => {
