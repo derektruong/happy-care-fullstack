@@ -7,6 +7,10 @@ export const Role = Object.freeze({
   member: 'member',
 });
 
+export const UserDefaultProfile = Object.freeze({
+  fullname: 'New User',
+});
+
 export const ScreenName = Object.freeze({
   login: 'login',
   register: 'register',
@@ -49,4 +53,8 @@ export const SocketKey = Object.freeze({
   ReceiveMessage: 'receive-message',
   ReceiveNewMessage: 'receive-new-message',
   ReceiveTypingMessage: 'receive-typing-message',
+});
+
+export const AsyncStorageKey = Object.freeze({
+  UserId: 'userId',
 });

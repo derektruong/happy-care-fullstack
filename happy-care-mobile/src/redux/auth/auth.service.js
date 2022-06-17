@@ -1,5 +1,5 @@
 import { UserUrl, Role, ScreenName } from '../../api/common';
-import SecureStoreHelper from '../../api/helper/secure-store.helper';
+import { SecureStoreHelper, AsyncStoreHelper } from '../../api/helper';
 import { authActions, uiActions } from '../actions';
 import { httpService, socketService } from '../../api/services';
 
@@ -57,8 +57,7 @@ class AuthService {
 
         if (res.success === true) {
           const token = res.data && res.data.token;
-          SecureStoreHelper.setAuthBearerToken(token);
-
+          await SecureStoreHelper.setAuthBearerToken(token);
           socketService.emitJoinApp({ token });
 
           dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
@@ -69,6 +68,11 @@ class AuthService {
               position: 'top',
             })
           );
+
+          const user = res.data && res.data.user;
+          if (user && user._id) {
+            AsyncStoreHelper.setUserId(user._id);
+          }
         } else {
           dispatch(
             uiActions.showErrorUI({
