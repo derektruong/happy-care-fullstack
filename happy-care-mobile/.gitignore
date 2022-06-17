@@ -17,3 +17,6 @@ web-build/
 .env
 .env.test
 .env.production
+
+# vscode
+.vscode

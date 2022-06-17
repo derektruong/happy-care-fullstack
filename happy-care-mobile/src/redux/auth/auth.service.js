@@ -1,6 +1,6 @@
 import { UserUrl, Role, ScreenName } from '../../api/common';
 import { SecureStoreHelper, AsyncStoreHelper } from '../../api/helper';
-import { authActions, uiActions } from '../actions';
+import { authActions, uiActions, userActions } from '../actions';
 import { httpService, socketService } from '../../api/services';
 
 class AuthService {
@@ -98,9 +98,10 @@ class AuthService {
     return async (dispatch) => {
       try {
         SecureStoreHelper.deleteAuthBearerToken();
-
+        AsyncStoreHelper.removeUserId();
         socketService.emitDisconnect();
 
+        dispatch(userActions.resetUserInfo());
         dispatch(
           authActions.setLogout({
             registerCredentials: {},

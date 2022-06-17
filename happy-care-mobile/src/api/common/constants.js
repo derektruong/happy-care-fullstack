@@ -9,6 +9,7 @@ export const Role = Object.freeze({
 
 export const UserDefaultProfile = Object.freeze({
   fullname: 'New User',
+  avatar: 'https://cdn-icons-png.flaticon.com/512/2922/2922510.png',
 });
 
 export const ScreenName = Object.freeze({
