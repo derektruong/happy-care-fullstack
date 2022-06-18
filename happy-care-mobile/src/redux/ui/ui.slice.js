@@ -16,7 +16,7 @@ const uiSlice = createSlice({
         status: UiStatus.success,
         title: action.payload.title,
         message: action.payload.message,
-        position: action.payload.position,
+        position: action.payload.position || 'top',
       };
     },
 
@@ -25,7 +25,7 @@ const uiSlice = createSlice({
         status: UiStatus.loading,
         title: action.payload.title,
         message: action.payload.message,
-        position: action.payload.position,
+        position: action.payload.position || 'top',
       };
     },
 
@@ -34,7 +34,7 @@ const uiSlice = createSlice({
         status: UiStatus.error,
         title: action.payload.title,
         message: action.payload.message,
-        position: action.payload.position,
+        position: action.payload.position || 'top',
       };
     },
   },

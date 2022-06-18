@@ -1,4 +1,5 @@
 import SecureStoreHelper from '../helper/secure-store.helper';
+import { Logger } from '../common';
 
 class HttpService {
   static getInstance() {
@@ -39,25 +40,34 @@ class HttpService {
   }
 
   async post(url, body, isAuthorized = true) {
-    const headers = isAuthorized ? await this.initAuthHeader() : this.initBasicHeader();
+    try {
+      const headers = isAuthorized ? await this.initAuthHeader() : this.initBasicHeader();
+      const isFormDataBody = !!(body instanceof FormData);
 
-    const response = await fetch(url, {
-      headers,
-      credentials: 'include',
-      method: 'POST',
-      body: JSON.stringify(body),
-    });
+      if (isFormDataBody) {
+        headers['Content-Type'] = 'multipart/form-data';
+      }
 
-    return response.json();
+      const response = await fetch(url, {
+        headers,
+        credentials: 'include',
+        method: 'POST',
+        body: isFormDataBody ? body : JSON.stringify(body),
+      });
+
+      return response.json();
+    } catch (error) {
+      Logger.Error(error.message);
+    }
   }
 
-  async put(url, body, isAuthorized = true) {
+  async patch(url, body, isAuthorized = true) {
     const headers = isAuthorized ? await this.initAuthHeader() : this.initBasicHeader();
 
     const response = await fetch(url, {
       headers,
       credentials: 'include',
-      method: 'PUT',
+      method: 'PATCH',
       body: JSON.stringify(body),
     });
 

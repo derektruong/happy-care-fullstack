@@ -1,7 +1,19 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Text, VStack, HStack, Box, Center, Button, Avatar, IconButton, Icon } from 'native-base';
+import {
+  Text,
+  VStack,
+  HStack,
+  Box,
+  Center,
+  Heading,
+  Button,
+  Avatar,
+  IconButton,
+  Icon,
+} from 'native-base';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { uiActions } from '../../../redux/actions';
 import { authService } from '../../../redux/services';
 import { ScreenName, Role } from '../../../api/common';
 
@@ -16,6 +28,10 @@ export const Profile = ({ navigation }) => {
     }
   }, [currentScreen, navigation]);
 
+  const onUpdateProfileHandler = () => {
+    dispatch(uiActions.navigateScreen(ScreenName.updateProfile));
+  };
+
   const onLogoutHandler = () => {
     dispatch(authService.logout());
   };
@@ -24,6 +40,9 @@ export const Profile = ({ navigation }) => {
       <VStack w="100%" h="100%">
         <Box w="100%" h="30%" bgColor="blue.700" roundedBottomRight="2xl" roundedBottomLeft="2xl">
           <Center h="100%">
+            <Heading my="2" size="md" color="amber.100" fontWeight={600}>
+              {role === Role.doctor ? 'Bác sĩ' : 'Thành viên'}
+            </Heading>
             <Avatar
               bg="teal.500"
               alignSelf="center"
@@ -35,6 +54,9 @@ export const Profile = ({ navigation }) => {
             >
               Avatar
             </Avatar>
+            <Heading mt="2" size="xl" color="amber.100" fontWeight={600}>
+              {profile.fullname}
+            </Heading>
           </Center>
           <IconButton
             icon={<Icon as={FontAwesome} name="edit" />}
@@ -42,6 +64,7 @@ export const Profile = ({ navigation }) => {
             top="2%"
             right="2%"
             borderRadius="full"
+            onPress={onUpdateProfileHandler}
             _icon={{
               color: 'orange.50',
               size: 'md',

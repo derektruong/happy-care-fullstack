@@ -1,6 +1,10 @@
+import { Platform } from 'react-native';
+
 export const AppName = 'Happy care';
 
 export const JwtToken = 'token';
+
+export const BottomBarHeight = Platform.OS === 'android' ? 55 : 85;
 
 export const Role = Object.freeze({
   doctor: 'doctor',
@@ -19,7 +23,9 @@ export const ScreenName = Object.freeze({
   home: 'home',
   chatLobby: 'chatLobby',
   medicine: 'medicine',
+  profileNavigation: 'profileNavigation',
   profile: 'profile',
+  updateProfile: 'updateProfile',
 });
 
 export const UiStatus = Object.freeze({

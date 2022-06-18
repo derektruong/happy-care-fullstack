@@ -4,3 +4,4 @@ export * from './home/Home';
 export * from './chat/ChatLobby';
 export * from './medicine/Medicine';
 export * from './profile/Profile';
+export * from './profile/UpdateProfile';
