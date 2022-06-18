@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Profile } from '../screens';
+import { Profile, UpdateProfile } from '../screens';
 import { ScreenName } from '../../api/common';
 
 const Stack = createStackNavigator();
@@ -10,6 +10,13 @@ const ProfileNavigation = () => (
     <Stack.Screen
       name={ScreenName.profile}
       component={Profile}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name={ScreenName.updateProfile}
+      component={UpdateProfile}
       options={{
         headerShown: false,
       }}

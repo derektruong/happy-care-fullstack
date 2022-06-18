@@ -20,7 +20,7 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setUserProfile: (state, action) => {
+    setUserInfo: (state, action) => {
       const { role, email, specializations, background, profile } = action.payload;
 
       state.role = role || state.role;
@@ -47,6 +47,15 @@ const userSlice = createSlice({
       state.background = initialState.background;
       state.profile = {
         ...initialState.profile,
+      };
+    },
+
+    setUserProfile: (state, action) => {
+      const { profile } = action.payload;
+
+      state.profile = {
+        ...state.profile,
+        ...profile,
       };
     },
   },

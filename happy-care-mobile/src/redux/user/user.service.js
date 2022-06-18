@@ -1,6 +1,7 @@
 import { UserUrl } from '../../api/common';
+import store from '../store';
 import { uiActions, userActions } from '../actions';
-import { httpService } from '../../api/services';
+import { httpService, cloudinaryService } from '../../api/services';
 
 class UserService {
   static getInstance() {
@@ -21,12 +22,54 @@ class UserService {
           const user = res.data && res.data.user;
           const { role, email, background, profile, specializations } = user;
           dispatch(
-            userActions.setUserProfile({
+            userActions.setUserInfo({
               role,
               email,
               background,
               profile,
               specializations,
+            })
+          );
+        }
+      } catch (error) {
+        dispatch(
+          uiActions.showErrorUI({
+            title: 'Error',
+            message: error.message,
+          })
+        );
+      }
+    };
+  }
+
+  updateUserInfo(userInfo) {
+    return async (dispatch) => {
+      const state = store.getState();
+      if (userInfo.avatar && userInfo.avatar !== state.user.profile.avatar) {
+        const avatarUrl = await cloudinaryService.uploadImage(userInfo.avatar);
+        userInfo.avatar = avatarUrl;
+      }
+
+      const updateData = {
+        profile: {
+          fullname: userInfo.fullname || null,
+          avatar: userInfo.avatar || null,
+          phone: userInfo.phone || null,
+          address: userInfo.address || null,
+          age: userInfo.age || null,
+        },
+      };
+
+      try {
+        const url = `${UserUrl}/me`;
+        const res = await httpService.patch(url, updateData);
+
+        if (res.success) {
+          dispatch(userActions.setUserProfile(updateData));
+          dispatch(
+            uiActions.showSuccessUI({
+              title: 'Update successfully',
+              message: 'Cập nhật thông tin thành công',
             })
           );
         }

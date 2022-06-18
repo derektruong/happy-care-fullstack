@@ -26,7 +26,7 @@ export const Login = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const { currentScreen } = useSelector((state) => state.ui);
-  const { loginCredentials } = useSelector((state) => state.auth);
+  const { loginCredentials, isLoggedIn } = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(true);
   const [errors, setErrors] = useState({});
 
@@ -46,7 +46,6 @@ export const Login = ({ navigation }) => {
         setIsLoading(false);
       }
     }
-
     checkAuthentication();
   }, [dispatch]);
 
@@ -55,6 +54,10 @@ export const Login = ({ navigation }) => {
       return navigation.navigate(currentScreen);
     }
   }, [currentScreen, navigation]);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [isLoggedIn]);
 
   const onFormChangeHandler = (type, value) => {
     dispatch(
