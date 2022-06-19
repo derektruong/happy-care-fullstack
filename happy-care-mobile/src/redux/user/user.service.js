@@ -1,6 +1,7 @@
-import { UserUrl } from '../../api/common';
+import _ from 'lodash';
+import { Logger, UserUrl, UserDefaultProfile } from '../../api/common';
 import store from '../store';
-import { uiActions, userActions } from '../actions';
+import { uiActions, userActions, roleActions } from '../actions';
 import { httpService, cloudinaryService } from '../../api/services';
 
 class UserService {
@@ -82,6 +83,33 @@ class UserService {
         );
       }
     };
+  }
+
+  async getDoctors(specId = null) {
+    try {
+      const url = `${UserUrl}/get-doctors`;
+      const params = specId || null;
+      const res = await httpService.get(url, params);
+      if (res.success) {
+        const { doctors } = res.data;
+        store.dispatch(
+          roleActions.setDoctors({
+            doctors: doctors.map((dt) => {
+              const doctor = {
+                id: _.get(dt, '_id', ''),
+                fullname: _.get(dt, 'profile.fullname', ''),
+                specializations: _.get(dt, 'specializations', []),
+                avatar: _.get(dt, 'profile.avatar', UserDefaultProfile.doctorAvatar),
+              };
+              return doctor;
+            }),
+          })
+        );
+      }
+      return [];
+    } catch (error) {
+      Logger.Error(error.message);
+    }
   }
 }
 
