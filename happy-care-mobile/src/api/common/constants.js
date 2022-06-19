@@ -12,18 +12,27 @@ export const Role = Object.freeze({
 });
 
 export const UserDefaultProfile = Object.freeze({
-  fullname: 'New User',
+  fullname: 'New member',
   avatar: 'https://cdn-icons-png.flaticon.com/512/2922/2922510.png',
+  doctorAvatar: 'https://cdn-icons-png.flaticon.com/512/921/921130.png',
 });
 
 export const ScreenName = Object.freeze({
   login: 'login',
   register: 'register',
+
   bottomTab: 'bottomTab',
-  home: 'home',
-  chatLobby: 'chatLobby',
-  medicine: 'medicine',
+
+  chatNavigation: 'chatNavigation',
   profileNavigation: 'profileNavigation',
+
+  home: 'home',
+
+  chatLobby: 'chatLobby',
+  searchDoctor: 'searchDoctor',
+
+  medicine: 'medicine',
+
   profile: 'profile',
   updateProfile: 'updateProfile',
 });

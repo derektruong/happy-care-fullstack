@@ -1,8 +1,18 @@
 import { omit } from 'lodash';
 import * as validator from 'validator';
 import React, { useEffect, useState } from 'react';
+import { Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { VStack, Box, Center, Avatar, Icon, FormControl, Input, ScrollView } from 'native-base';
+import {
+  VStack,
+  Center,
+  Avatar,
+  Icon,
+  FormControl,
+  Input,
+  ScrollView,
+  KeyboardAvoidingView,
+} from 'native-base';
 import { FontAwesome, Entypo, Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { uiActions } from '../../../redux/actions';
@@ -86,7 +96,13 @@ export const UpdateProfile = ({ navigation }) => {
   };
 
   return (
-    <Box>
+    <KeyboardAvoidingView
+      h={{
+        base: '100%',
+        lg: 'auto',
+      }}
+      behavior={Platform.OS === 'ios' && 'padding'}
+    >
       <VStack w="100%" h="100%">
         <HCUpdateHeader
           headerTitle="Cập nhật thông tin"
@@ -114,7 +130,7 @@ export const UpdateProfile = ({ navigation }) => {
             </Avatar.Badge>
           </Avatar>
         </Center>
-        <ScrollView w="70%" h="60%" alignSelf="center" mb={BottomBarHeight + 5} space={2}>
+        <ScrollView w="70%" h="60%" alignSelf="center" mb={BottomBarHeight + 10} space={2}>
           <FormControl isDisabled>
             <FormControl.Label
               _text={{
@@ -137,7 +153,13 @@ export const UpdateProfile = ({ navigation }) => {
               borderRadius="md"
               value={email}
               InputLeftElement={
-                <Icon as={<Entypo name="mail" />} size={5} ml="4" color="blue.500" />
+                <Icon
+                  as={<Entypo name="mail" />}
+                  minWidth="25px"
+                  size={5}
+                  ml="4"
+                  color="blue.500"
+                />
               }
             />
           </FormControl>
@@ -163,7 +185,13 @@ export const UpdateProfile = ({ navigation }) => {
               borderRadius="md"
               value={profileForm.fullname}
               InputLeftElement={
-                <Icon as={<Ionicons name="person" />} size={5} ml="4" color="blue.500" />
+                <Icon
+                  as={<Ionicons name="person" />}
+                  minWidth="25px"
+                  size={5}
+                  ml="4"
+                  color="blue.500"
+                />
               }
               onChangeText={(value) => onFormChangeHandler('fullname', value)}
             />
@@ -201,7 +229,13 @@ export const UpdateProfile = ({ navigation }) => {
               borderRadius="md"
               value={profileForm.age}
               InputLeftElement={
-                <Icon as={<FontAwesome name="address-card" />} size={5} ml="4" color="blue.500" />
+                <Icon
+                  as={<FontAwesome name="address-card" />}
+                  minWidth="25px"
+                  size={5}
+                  ml="4"
+                  color="blue.500"
+                />
               }
               onChangeText={(value) => onFormChangeHandler('age', value)}
             />
@@ -239,7 +273,13 @@ export const UpdateProfile = ({ navigation }) => {
               borderRadius="md"
               value={profile.phone}
               InputLeftElement={
-                <Icon as={<FontAwesome name="phone" />} size={5} ml="4" color="blue.500" />
+                <Icon
+                  as={<FontAwesome name="phone" />}
+                  minWidth="25px"
+                  size={5}
+                  ml="4"
+                  color="blue.500"
+                />
               }
               onChangeText={(value) => onFormChangeHandler('phone', value)}
             />
@@ -277,13 +317,19 @@ export const UpdateProfile = ({ navigation }) => {
               borderRadius="md"
               value={profileForm.address}
               InputLeftElement={
-                <Icon as={<FontAwesome name="map-marker" />} size={5} ml="4" color="blue.500" />
+                <Icon
+                  as={<FontAwesome name="map-marker" />}
+                  minWidth="25px"
+                  size={5}
+                  ml="4"
+                  color="blue.500"
+                />
               }
               onChangeText={(value) => onFormChangeHandler('address', value)}
             />
           </FormControl>
         </ScrollView>
       </VStack>
-    </Box>
+    </KeyboardAvoidingView>
   );
 };

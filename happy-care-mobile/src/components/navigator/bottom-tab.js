@@ -2,9 +2,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { Home, ChatLobby, Medicine } from '../screens';
+import { Home, Medicine } from '../screens';
 // import HomeNavigation from './home.navigation';
-// import ChatNavigation from './chat.navigation';
+import ChatNavigation from './chat';
 // import MedicineNavigation from './medicine.navigation';
 import ProfileNavigation from './profile';
 import { ScreenName, BottomBarHeight } from '../../api/common';
@@ -42,8 +42,8 @@ const BottomTabNavigation = () => (
       }}
     />
     <Tab.Screen
-      name={ScreenName.chatLobby}
-      component={ChatLobby}
+      name={ScreenName.chatNavigation}
+      component={ChatNavigation}
       options={{
         headerShown: false,
         tabBarLabel: 'Trò chuyện',

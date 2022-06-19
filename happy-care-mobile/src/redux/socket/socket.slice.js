@@ -5,7 +5,7 @@ const initialState = {
   isConnected: false,
   joinData: {},
   onlineUsers: {},
-  onlineDoctors: {},
+  onlineDoctors: [],
   onlineMembers: {},
   numOfUsers: 0,
   numOfDoctors: 0,
@@ -21,13 +21,10 @@ const socketSlice = createSlice({
       state.isConnected = action.payload;
       Logger.Info('Websocket connected to server');
     },
-    // joinApp: (state, action) => {
-    //   socket.emit(SocketKey.Join, (ackData) => {
-    //     Logger.Info('Websocket joined to server', ackData);
-    //     state.
-    //   })
-    //   state.joinData = action.payload;
-    // },
+
+    setOnlineDoctors: (state, action) => {
+      state.onlineDoctors = action.payload;
+    },
   },
 });
 

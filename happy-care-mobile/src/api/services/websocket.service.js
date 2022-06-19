@@ -43,6 +43,17 @@ class WebSocketService {
     }
   }
 
+  emitGetDoctorInApp() {
+    if (this.socket) {
+      this.socket.emit(SocketKey.GetDoctorsInApp, this.socket.id, (res) => {
+        if (res.success && res.data.doctors) {
+          const doctors = res.data.doctors.map((doctor) => doctor.userId);
+          store.dispatch(socketActions.setOnlineDoctors(doctors));
+        }
+      });
+    }
+  }
+
   emitDisconnect() {
     if (this.socket) {
       this.socket.emit(SocketKey.Disconnect);
