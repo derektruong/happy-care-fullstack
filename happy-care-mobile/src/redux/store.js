@@ -6,6 +6,7 @@ import userReducer from './user/user.slice';
 import roleReducer from './role/role.slice';
 import newReducer from './news/news.slice';
 import specReducer from './specialization/specialization.slice';
+import symptomsReducer from './symptoms/symptoms.slice';
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     role: roleReducer,
     spec: specReducer,
     news: newReducer,
+    symptoms: symptomsReducer,
   },
 });
 

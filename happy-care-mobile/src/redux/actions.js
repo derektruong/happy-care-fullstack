@@ -5,4 +5,4 @@ export * from './user/user.slice';
 export * from './role/role.slice';
 export * from './specialization/specialization.slice';
 export * from './news/news.slice';
-
+export * from './symptoms/symptoms.slice';
