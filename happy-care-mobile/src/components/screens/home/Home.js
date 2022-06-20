@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Text, VStack, Box, Button, Heading, Center } from 'native-base';
 import { userService } from '../../../redux/services';
 import { socketService } from '../../../api/services';
+import { BottomBarHeight } from '../../../api/common';
+import { News } from './News';
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -21,17 +23,13 @@ export const Home = () => {
   };
 
   return (
-    <Box>
+    <Box mb={BottomBarHeight + 10}>
       <Heading fontSize="xl" p="4" pb="3">
         Chào {profile.fullname}
       </Heading>
-      <VStack w="100%" h="90%">
-        <Center h="100%">
-          <Text color="black">Chào mừng đến trang chủ</Text>
-          <Button size="sm" colorScheme="blue" onPress={getUsersInAppHandler}>
-            <Text color="primary.100">Get user in app</Text>
-          </Button>
-        </Center>
+      <VStack w="100%" h="90%" >
+        <Text fontSize="lg" bold color='purple.600' pl='4'>Tin tức</Text>
+        <News w="100%" />
       </VStack>
     </Box>
   );
