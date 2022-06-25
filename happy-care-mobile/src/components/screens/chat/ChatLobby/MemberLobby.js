@@ -3,7 +3,6 @@ import {
   Text,
   Pressable,
   VStack,
-  HStack,
   Heading,
   FlatList,
   Avatar,
@@ -14,9 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { uiActions } from '../../../../redux/actions';
 import { userService } from '../../../../redux/services';
-import { ScreenName, UserDefaultProfile } from '../../../../api/common';
+import { ScreenName } from '../../../../api/common';
 import { socketService } from '../../../../api/services';
-import { doc } from 'prettier';
 import { ChanelList } from './ChannelList';
 
 export const MemberLobby = ({ navigation }) => {
@@ -35,13 +33,13 @@ export const MemberLobby = ({ navigation }) => {
 
   const onSearchHandler = () => {
     dispatch(uiActions.navigateScreen(ScreenName.searchDoctor));
-    navigation.navigate(ScreenName.searchDoctor);
+    navigation.navigate(ScreenName.searchDoctor, {});
   };
 
   const onSelectDoctorHandler = (doctor) => {
     dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
     navigation.navigate(ScreenName.chatRoom, {
-      doctor: doctor
+      doctor: doctor,
     });
   };
 

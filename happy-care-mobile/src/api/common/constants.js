@@ -32,6 +32,7 @@ export const ScreenName = Object.freeze({
   webNews: 'webNews',
 
   searchSpecializations: 'SearchSpecializations',
+  searchDoctorBySpec: 'searchDoctorBySpec',
   chatLobby: 'chatLobby',
   searchDoctor: 'searchDoctor',
 
