@@ -76,7 +76,7 @@ export const SearchDoctorBySpec = ({ route, navigation }) => {
               bg: 'blue.200:alpha.20',
             }}
           />
-          <Text fontSize="md" bold color="blue.700" textAlign="center">
+          <Text fontSize="lg" lineHeight="lg" bold color="blue.700" textAlign="center">
             Danh sách bác sĩ
           </Text>
         </HStack>
@@ -94,10 +94,10 @@ export const SearchDoctorBySpec = ({ route, navigation }) => {
                   size="md"
                   p="2px"
                   source={{
-                    uri: item.avatar,
+                    uri: item.profile.avatar,
                   }}
                 >
-                  {onlineDoctors.includes(item.id) && <Avatar.Badge bg="green.600" />}
+                  {onlineDoctors.includes(item._id) && <Avatar.Badge bg="green.600" />}
                 </Avatar>
                 <VStack alignContent="center">
                   <Text fontSize="12px" fontWeight={500}>
