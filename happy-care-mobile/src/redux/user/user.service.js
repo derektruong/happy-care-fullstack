@@ -100,6 +100,7 @@ class UserService {
                 fullname: _.get(dt, 'profile.fullname', ''),
                 specializations: _.get(dt, 'specializations', []),
                 avatar: _.get(dt, 'profile.avatar', UserDefaultProfile.doctorAvatar),
+                email: _.get(dt, 'email', '')
               };
               return doctor;
             }),

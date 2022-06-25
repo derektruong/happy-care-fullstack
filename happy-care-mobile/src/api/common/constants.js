@@ -31,6 +31,7 @@ export const ScreenName = Object.freeze({
   symptomsExpand: 'symptomsExpand',
   webNews: 'webNews',
 
+  searchSpecializations: 'SearchSpecializations',
   chatLobby: 'chatLobby',
   searchDoctor: 'searchDoctor',
 
@@ -38,6 +39,8 @@ export const ScreenName = Object.freeze({
 
   profile: 'profile',
   updateProfile: 'updateProfile',
+
+  chatRoom: 'chatRoom',
 });
 
 export const UiStatus = Object.freeze({

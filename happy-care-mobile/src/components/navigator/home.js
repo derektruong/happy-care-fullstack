@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Home, SymptomsExpand, WebNews } from '../screens';
+import { Home, SymptomsExpand, WebNews, SearchSpecializations } from '../screens';
 import { ScreenName } from '../../api/common';
 
 const Stack = createStackNavigator();
@@ -24,6 +24,13 @@ const HomeNavigation = () => (
     <Stack.Screen
       name={ScreenName.webNews}
       component={WebNews}
+      options={{
+        headerShown: false,
+      }}
+    />
+    <Stack.Screen
+      name={ScreenName.searchSpecializations}
+      component={SearchSpecializations}
       options={{
         headerShown: false,
       }}
