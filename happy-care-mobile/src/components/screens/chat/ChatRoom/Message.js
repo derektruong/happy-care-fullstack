@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import { Text, View, Image } from 'native-base';
+import { Text, View } from 'native-base';
+import { Image } from 'react-native';
 import { AsyncStoreHelper } from '../../../../api/helper';
 
 export const Message = (props) => {
@@ -22,6 +23,7 @@ export const Message = (props) => {
         margin: 10,
         borderRadius: 10,
         width: '70%',
+        flexDirection: 'row'
       }}
         bg= {isMyMessage ? 'blue.500' : 'muted.200'}
       >
@@ -33,12 +35,24 @@ export const Message = (props) => {
           >
             { message.content }
           </Text>) :
-          (<Image 
-            source={{
-              uri: message.content
-            }}
-            alt=""
-          />)
+          (
+            message.type === 'image' ? (<Image 
+              source={{
+                uri: message.content
+              }}
+              style={{
+                resizeMode: 'contain',
+                flex: 1,
+                aspectRatio: 1
+              }}
+            />) :
+            (<Text
+              color={isMyMessage ? 'white' : 'black'}
+              borderRadius="8"
+            >
+              { message.content }
+            </Text>)
+          )
         }
       </View>
   );

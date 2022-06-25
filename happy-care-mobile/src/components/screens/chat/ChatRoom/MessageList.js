@@ -37,6 +37,7 @@ export const MessageList = (props) => {
                 renderItem={({item}) => 
                     <Message message={item} userId={item.user}/>
                 }
+                keyExtractor={(item) => item._id}
             />
         </View>
     );
