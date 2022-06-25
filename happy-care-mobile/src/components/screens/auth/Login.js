@@ -94,7 +94,7 @@ export const Login = ({ navigation }) => {
       const isLoggedSuccess = await authService.login(loginCredentials);
       if (isLoggedSuccess) {
         dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
-        navigation.navigate(ScreenName.bottomTab);
+        navigation.replace(ScreenName.bottomTab);
       }
     }
   };
