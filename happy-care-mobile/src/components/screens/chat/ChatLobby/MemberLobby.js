@@ -38,6 +38,7 @@ export const MemberLobby = ({ navigation }) => {
 
   const onSelectDoctorHandler = () => {
     dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
+    navigation.navigate(ScreenName.chatRoom);
   };
 
   return (
