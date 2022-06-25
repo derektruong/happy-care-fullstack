@@ -1,37 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
 import {
-  Box,
   VStack,
   HStack,
   KeyboardAvoidingView,
   IconButton,
-  CheckIcon,
   Icon,
   Avatar,
-  Select,
   FlatList,
   Text,
   Pressable,
 } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { Entypo } from '@expo/vector-icons';
-import { uiActions } from '../../../../redux/actions';
-import { specService } from '../../../../redux/services';
-import { ScreenName, BottomBarHeight } from '../../../../api/common';
+import { uiActions } from '../../../redux/actions';
+import { userService, doctorsService } from '../../../redux/services';
+import { ScreenName, BottomBarHeight } from '../../../api/common';
+import { socketService } from '../../../api/services';
 
-export const SearchDoctor = ({ navigation }) => {
+export const SearchDoctorBySpec = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const { specs } = useSelector((state) => state.spec);
+  const { doctorsBySpec } = useSelector((state) => state.doctorsBySpec);
   const { onlineDoctors } = useSelector((state) => state.socket);
-  const { doctors } = useSelector((state) => state.role);
-
-  const [filterDoctors, setFilterDoctors] = useState(doctors);
-  const [selectedSpec, setSelectedSpec] = useState('');
+  const { itemSpec } = route.params;
 
   useEffect(() => {
-    specService.getAllSpecs();
+    userService.getDoctors();
+    const intervalDoctorsOnline = setInterval(() => {
+      socketService.emitGetDoctorInApp();
+    }, 15000);
+    return () => clearInterval(intervalDoctorsOnline);
   }, []);
+
+  useEffect(() => {
+    doctorsService.getDoctorsBySpec(itemSpec.id);
+  }, [itemSpec]);
 
   useEffect(() => {
     navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
@@ -39,14 +42,8 @@ export const SearchDoctor = ({ navigation }) => {
   }, [navigation]);
 
   const onBackScreenHandler = () => {
-    dispatch(uiActions.navigateScreen(ScreenName.chatLobby));
-    navigation.navigate(ScreenName.chatLobby);
-  };
-
-  const onChangeSelectedSpec = (spec) => {
-    setSelectedSpec(spec);
-    const filteredDoctors = doctors.filter((doctor) => doctor.specializations.includes(spec));
-    setFilterDoctors(filteredDoctors);
+    dispatch(uiActions.navigateScreen(ScreenName.home));
+    navigation.navigate(ScreenName.home);
   };
 
   const onSelectDoctorHandler = (doctor) => {
@@ -79,30 +76,15 @@ export const SearchDoctor = ({ navigation }) => {
               bg: 'blue.200:alpha.20',
             }}
           />
-          <Box w="90%">
-            <Select
-              selectedValue={selectedSpec}
-              minWidth="200"
-              borderWidth={0}
-              accessibilityLabel="Tất cả chuyên khoa"
-              placeholder="Tất cả chuyên khoa"
-              _selectedItem={{
-                bg: 'teal.600',
-                endIcon: <CheckIcon size="5" />,
-              }}
-              onValueChange={onChangeSelectedSpec}
-            >
-              {specs.map((spec) => (
-                <Select.Item key={spec.id} label={spec.name} value={spec.name} />
-              ))}
-            </Select>
-          </Box>
+          <Text fontSize="lg" lineHeight="lg" bold color="blue.700" textAlign="center">
+            Danh sách bác sĩ
+          </Text>
         </HStack>
         <FlatList
           mb={5}
           pt={5}
           px={3}
-          data={filterDoctors}
+          data={doctorsBySpec}
           renderItem={({ item }) => (
             <Pressable w="90%" h="80px" mr={1} onPress={() => onSelectDoctorHandler(item)}>
               <HStack alignItems="center" space={3}>
@@ -112,21 +94,21 @@ export const SearchDoctor = ({ navigation }) => {
                   size="md"
                   p="2px"
                   source={{
-                    uri: item.avatar,
+                    uri: item.profile.avatar,
                   }}
                 >
-                  {onlineDoctors.includes(item.id) && <Avatar.Badge bg="green.600" />}
+                  {onlineDoctors.includes(item._id) && <Avatar.Badge bg="green.600" />}
                 </Avatar>
                 <VStack alignContent="center">
                   <Text fontSize="12px" fontWeight={500}>
-                    {item.fullname}
+                    {item.profile.fullname}
                   </Text>
                   <Text fontSize="10px">{item.specializations.join(',')}</Text>
                 </VStack>
               </HStack>
             </Pressable>
           )}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => index}
         />
       </VStack>
     </KeyboardAvoidingView>

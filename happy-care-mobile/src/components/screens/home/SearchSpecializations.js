@@ -25,8 +25,9 @@ export const SearchSpecializations = ({ route, navigation }) => {
     return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
   }, [navigation]);
 
-  const SearchDoctorBySpecializations = () => {
-    console.log('SearchDoctorBySpecializations');
+  const SearchDoctorBySpecializations = (itemSpec) => {
+    dispatch(uiActions.navigateScreen(ScreenName.searchDoctorBySpec));
+    navigation.navigate(ScreenName.searchDoctorBySpec, { itemSpec });
   };
 
   return (
@@ -45,7 +46,7 @@ export const SearchSpecializations = ({ route, navigation }) => {
           p="4"
           numColumns={1}
           data={specs}
-          keyExtractor={(item, index) => index}
+          keyExtractor={(item, index) => index + 1}
           renderItem={({ item, index }) => (
             <Pressable
               w="80"
@@ -58,7 +59,7 @@ export const SearchSpecializations = ({ route, navigation }) => {
               _pressed={{
                 bg: 'blue.600',
               }}
-              onPress={SearchDoctorBySpecializations}
+              onPress={() => SearchDoctorBySpecializations(item)}
             >
               <Text ml="4" color="white" fontSize="lg" fontWeight="bold">
                 {index + 1}

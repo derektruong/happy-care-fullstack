@@ -6,3 +6,4 @@ export * from './role/role.slice';
 export * from './specialization/specialization.slice';
 export * from './news/news.slice';
 export * from './symptoms/symptoms.slice';
+export * from './doctors/doctors.slice';
