@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Heading } from 'native-base';
+import { Box, Heading, VStack, Text } from 'native-base';
 import { userService } from '../../../redux/services';
-// import { socketService } from '../../../api/services';
+import { BottomBarHeight } from '../../../api/common';
+import { News } from './News';
 import { SymptomsKeyword } from './SymptomsKeyword';
 
 export const Home = ({ navigation }) => {
@@ -22,11 +23,15 @@ export const Home = ({ navigation }) => {
   // };
 
   return (
-    <Box>
+    <Box mb={BottomBarHeight + 10}>
       <Heading fontSize="xl" p="4" pb="3">
         Chào {profile.fullname}
       </Heading>
-      <SymptomsKeyword navigation={navigation} />
+      <VStack w="100%" h="90%" >
+        <SymptomsKeyword navigation={navigation} />
+        <Text fontSize="lg" bold color='purple.600' pl='4'>Tin tức</Text>
+        <News w="100%" />
+      </VStack>
     </Box>
   );
 };
