@@ -3,7 +3,6 @@ import {
   Text,
   Pressable,
   VStack,
-  HStack,
   Heading,
   FlatList,
   Avatar,
@@ -14,8 +13,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { uiActions } from '../../../../redux/actions';
 import { userService } from '../../../../redux/services';
-import { ScreenName, UserDefaultProfile } from '../../../../api/common';
+import { ScreenName } from '../../../../api/common';
 import { socketService } from '../../../../api/services';
+import { ChanelList } from './ChannelList';
 
 export const MemberLobby = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -90,23 +90,7 @@ export const MemberLobby = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         horizontal
       />
-      <HStack alignItems="center" space={5}>
-        <Avatar
-          bg="blue.600"
-          alignSelf="center"
-          size="md"
-          p="2px"
-          source={{
-            uri: UserDefaultProfile.avatar,
-          }}
-        />
-        <VStack alignContent="center">
-          <Text bold fontSize="16px">
-            Tên thành viên
-          </Text>
-          <Text>Message content</Text>
-        </VStack>
-      </HStack>
+      <ChanelList/>
     </VStack>
   );
 };
