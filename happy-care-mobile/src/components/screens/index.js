@@ -7,3 +7,4 @@ export * from './chat/ChatLobby/SearchDoctor';
 export * from './medicine/Medicine';
 export * from './profile/Profile';
 export * from './profile/UpdateProfile';
+export * from './chat/ChatRoom';
