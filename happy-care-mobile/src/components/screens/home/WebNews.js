@@ -9,9 +9,14 @@ export const WebNews = ({ route, navigation }) => {
     const { link } = route.params;
     const dispatch = useDispatch();
 
+    useEffect(() => {
+        navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
+        return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
+    }, [navigation]);
+
     const onBackScreenHandler = () => {
         dispatch(uiActions.navigateScreen(ScreenName.home));
-        navigation.navigate(ScreenName.home);
+        navigation.navigate(ScreenName.home)?.setOptions({ tabBarStyle: { display: 'none' } });
     };
 
     return (

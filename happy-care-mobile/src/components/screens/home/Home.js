@@ -27,7 +27,7 @@ export const Home = ({ navigation }) => {
       <Heading fontSize="xl" p="4" pb="3">
         Chào {profile.fullname}
       </Heading>
-      <VStack w="100%" h="100%" pb="100">
+      <VStack w="100%" h="100%">
         <SymptomsKeyword navigation={navigation} />
         <Text fontSize="lg" bold color='purple.600' pl='4'>Tin tức</Text>
         <News w="100%" navigation={navigation} />
