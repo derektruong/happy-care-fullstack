@@ -49,7 +49,7 @@ export const SearchDoctor = ({ navigation }) => {
     setFilterDoctors(filteredDoctors);
   };
 
-  const onSelectDoctorHandler = () => {
+  const onSelectDoctorHandler = (doctor) => {
     dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
     navigation.navigate(ScreenName.chatRoom, {
       doctor: doctor
