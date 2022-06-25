@@ -16,8 +16,9 @@ import { uiActions } from '../../../../redux/actions';
 import { userService } from '../../../../redux/services';
 import { ScreenName, UserDefaultProfile } from '../../../../api/common';
 import { socketService } from '../../../../api/services';
+import { doc } from 'prettier';
 
-export const MemberLobby = () => {
+export const MemberLobby = ({ navigation }) => {
   const dispatch = useDispatch();
   const { onlineDoctors } = useSelector((state) => state.socket);
   const { doctors } = useSelector((state) => state.role);
@@ -33,10 +34,14 @@ export const MemberLobby = () => {
 
   const onSearchHandler = () => {
     dispatch(uiActions.navigateScreen(ScreenName.searchDoctor));
+    navigation.navigate(ScreenName.searchDoctor);
   };
 
-  const onSelectDoctorHandler = () => {
+  const onSelectDoctorHandler = (doctor) => {
     dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
+    navigation.navigate(ScreenName.chatRoom, {
+      doctor: doctor
+    });
   };
 
   return (
@@ -64,7 +69,7 @@ export const MemberLobby = () => {
         mb={5}
         data={doctors}
         renderItem={({ item }) => (
-          <Pressable w="60px" h="80px" mr={1} onPress={onSelectDoctorHandler}>
+          <Pressable w="60px" h="80px" mr={1} onPress={() => onSelectDoctorHandler(item)}>
             <VStack alignItems="center">
               <Avatar
                 bg="blue.600"

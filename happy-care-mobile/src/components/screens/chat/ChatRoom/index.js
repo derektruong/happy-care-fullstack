@@ -1,18 +1,12 @@
-import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { ScreenName } from '../../../../api/common';
-import {ChatRoomHeader} from './ChatRoomHeader'
+import React, { Fragment } from 'react';
+import { ChatRoomHeader } from './ChatRoomHeader';
+import { MessageList } from './MessageList';
 
-export const ChatRoom = ({ navigation }) => {
-  const { currentScreen } = useSelector((state) => state.ui);
-
-  useEffect(() => {
-    if (currentScreen !== ScreenName.chatRoom) {
-      return navigation.navigate(currentScreen);
-    }
-  }, [currentScreen, navigation]);
-
+export const ChatRoom = ({ route, navigation }) => {
   return (
-    <ChatRoomHeader/>
+    <Fragment>
+      <ChatRoomHeader navigation={navigation} route={route}/>
+      <MessageList navigation={navigation} route={route}/>
+    </Fragment>
   );
-};
+}
