@@ -32,7 +32,7 @@ export const News = ({ navigation }) => {
                             uri: item.imgUrl
                         }} alt="News Imgage" size="xl" />
                         <VStack mt="2" mb="4" flexShrink='1'>
-                            <Text bold fontSize='sm'>
+                            <Text bold fontSize='sm' numberOfLines={2}>
                                 {item.title}
                             </Text>
                             <Text color="muted.500" flex='1' numberOfLines={4}>
