@@ -49,8 +49,11 @@ export const SearchDoctor = ({ navigation }) => {
     setFilterDoctors(filteredDoctors);
   };
 
-  const onSelectDoctorHandler = () => {
-    console.log('onSelectDoctorHandler');
+  const onSelectDoctorHandler = (doctor) => {
+    dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
+    navigation.navigate(ScreenName.chatRoom, {
+      doctor: doctor
+    });
   };
 
   return (
@@ -101,7 +104,7 @@ export const SearchDoctor = ({ navigation }) => {
           px={3}
           data={filterDoctors}
           renderItem={({ item }) => (
-            <Pressable w="90%" h="80px" mr={1} onPress={onSelectDoctorHandler}>
+            <Pressable w="90%" h="80px" mr={1} onPress={() => onSelectDoctorHandler(item)}>
               <HStack alignItems="center" space={3}>
                 <Avatar
                   bg="blue.600"
