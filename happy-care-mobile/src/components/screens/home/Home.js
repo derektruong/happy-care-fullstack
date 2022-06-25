@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Heading } from 'native-base';
+import { Box, Heading, VStack, Text } from 'native-base';
 import { userService } from '../../../redux/services';
 import { BottomBarHeight } from '../../../api/common';
 import { News } from './News';

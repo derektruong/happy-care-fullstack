@@ -73,9 +73,9 @@ export const SymptomsKeyword = ({ navigation }) => {
 
   return (
     <Box>
-      <VStack w="100%" h="90%" p="4" pt="2">
+      <VStack w="100%" px="4" pt="2" pb="0">
         {isShowQuestion && (
-          <VStack pb="4" w="100%" h="40%">
+          <VStack pb="4" w="100%">
             <Text fontSize="xl" bold color="purple.600">
               Hôm nay,
             </Text>
@@ -125,7 +125,7 @@ export const SymptomsKeyword = ({ navigation }) => {
         )}
 
         {isShowGreat && (
-          <VStack pb="4" w="100%" h="40%">
+          <VStack pb="4" w="100%" >
             <Text fontSize="xl" bold color="purple.600">
               Chúc bạn ngày mới tốt lành!!!
             </Text>
