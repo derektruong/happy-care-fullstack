@@ -8,7 +8,6 @@ import { symptomsService } from '../../../redux/services';
 
 export const SymptomsExpand = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { currentScreen } = useSelector((state) => state.ui);
   const { symptoms } = useSelector((state) => state.symptoms);
   const [symptomSelected, setSymptomsSelected] = useState([]);
 
@@ -17,13 +16,13 @@ export const SymptomsExpand = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (currentScreen !== ScreenName.symptomsExpand) {
-      return navigation.navigate(currentScreen);
-    }
-  }, [currentScreen, navigation]);
+    navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
+    return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
+  }, [navigation]);
 
   const onBackScreenHandler = () => {
     dispatch(uiActions.navigateScreen(ScreenName.home));
+    navigation.navigate(ScreenName.home);
   };
 
   const itemHandler = (id) => {

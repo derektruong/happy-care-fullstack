@@ -22,7 +22,6 @@ import { ScreenName, BottomBarHeight } from '../../../../api/common';
 
 export const SearchDoctor = ({ navigation }) => {
   const dispatch = useDispatch();
-  const { currentScreen } = useSelector((state) => state.ui);
   const { specs } = useSelector((state) => state.spec);
   const { onlineDoctors } = useSelector((state) => state.socket);
   const { doctors } = useSelector((state) => state.role);
@@ -35,13 +34,13 @@ export const SearchDoctor = ({ navigation }) => {
   }, []);
 
   useEffect(() => {
-    if (currentScreen !== ScreenName.doctorSpec) {
-      return navigation.navigate(currentScreen);
-    }
-  }, [currentScreen, navigation]);
+    navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
+    return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
+  }, [navigation]);
 
   const onBackScreenHandler = () => {
     dispatch(uiActions.navigateScreen(ScreenName.chatLobby));
+    navigation.navigate(ScreenName.chatLobby);
   };
 
   const onChangeSelectedSpec = (spec) => {

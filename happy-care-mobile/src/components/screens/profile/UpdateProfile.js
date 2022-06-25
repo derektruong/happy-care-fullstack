@@ -1,19 +1,10 @@
-import { omit } from 'lodash';
+import { omit, get } from 'lodash';
 import * as validator from 'validator';
 import React, { useEffect, useState } from 'react';
-import { Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  VStack,
-  Center,
-  Avatar,
-  Icon,
-  FormControl,
-  Input,
-  ScrollView,
-  KeyboardAvoidingView,
-} from 'native-base';
+import { VStack, Center, Avatar, Icon, FormControl, Input, ScrollView } from 'native-base';
 import { FontAwesome, Entypo, Ionicons } from '@expo/vector-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import * as ImagePicker from 'expo-image-picker';
 import { uiActions } from '../../../redux/actions';
 import { userService } from '../../../redux/services';
@@ -23,26 +14,25 @@ import { ScreenName, BottomBarHeight } from '../../../api/common';
 export const UpdateProfile = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  const { currentScreen } = useSelector((state) => state.ui);
   const { email, profile } = useSelector((state) => state.user);
 
   const [profileForm, setProfileForm] = useState({
-    fullname: profile.fullname || '',
-    age: profile.age.toString() || '',
-    phone: profile.phone || '',
-    address: profile.address || '',
-    avatar: profile.avatar || '',
+    fullname: `${get(profile, 'fullname', '')}`,
+    age: `${get(profile, 'age', '')}`,
+    phone: `${get(profile, 'phone', '')}`,
+    address: `${get(profile, 'address', '')}`,
+    avatar: `${get(profile, 'avatar', '')}`,
   });
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    if (currentScreen !== ScreenName.updateProfile) {
-      return navigation.navigate(currentScreen);
-    }
-  }, [currentScreen, navigation]);
+    navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
+    return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
+  }, [navigation]);
 
   const onBackScreenHandler = () => {
     dispatch(uiActions.navigateScreen(ScreenName.profile));
+    navigation.goBack();
   };
 
   const onSaveHandler = () => {
@@ -50,6 +40,7 @@ export const UpdateProfile = ({ navigation }) => {
     if (isFormValid) {
       dispatch(userService.updateUserInfo(profileForm));
       dispatch(uiActions.navigateScreen(ScreenName.profile));
+      navigation.goBack();
     }
   };
 
@@ -96,13 +87,7 @@ export const UpdateProfile = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      h={{
-        base: '100%',
-        lg: 'auto',
-      }}
-      behavior={Platform.OS === 'ios' && 'padding'}
-    >
+    <KeyboardAwareScrollView contentContainerStyle={{ flex: 1 }}>
       <VStack w="100%" h="100%">
         <HCUpdateHeader
           headerTitle="Cập nhật thông tin"
@@ -330,6 +315,6 @@ export const UpdateProfile = ({ navigation }) => {
           </FormControl>
         </ScrollView>
       </VStack>
-    </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
