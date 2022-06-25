@@ -16,7 +16,6 @@ import { uiActions } from '../../../../redux/actions';
 import { userService } from '../../../../redux/services';
 import { ScreenName, UserDefaultProfile } from '../../../../api/common';
 import { socketService } from '../../../../api/services';
-import { doc } from 'prettier';
 
 export const MemberLobby = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -34,13 +33,13 @@ export const MemberLobby = ({ navigation }) => {
 
   const onSearchHandler = () => {
     dispatch(uiActions.navigateScreen(ScreenName.searchDoctor));
-    navigation.navigate(ScreenName.searchDoctor);
+    navigation.navigate(ScreenName.searchDoctor, {});
   };
 
   const onSelectDoctorHandler = (doctor) => {
     dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
     navigation.navigate(ScreenName.chatRoom, {
-      doctor: doctor
+      doctor: doctor,
     });
   };
 

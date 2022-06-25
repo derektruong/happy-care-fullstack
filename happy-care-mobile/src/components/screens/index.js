@@ -4,6 +4,7 @@ export * from './home/Home';
 export * from './home/SymptomsExpand';
 export * from './home/WebNews';
 export * from './home/SearchSpecializations';
+export * from './home/SearchDoctorBySpec';
 export * from './chat/ChatLobby';
 export * from './chat/ChatLobby/SearchDoctor';
 export * from './medicine/Medicine';
