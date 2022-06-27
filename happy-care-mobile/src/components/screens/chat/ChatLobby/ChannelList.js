@@ -72,6 +72,13 @@ export const ChannelList = ({ navigation }) => {
     });
   };
 
+  const onSelectChanelHandler = (doctor) => {
+    dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
+    navigation.navigate(ScreenName.chatRoom, {
+      doctor: doctor,
+    });
+  };
+
   return (
     <>
       {isLoading && (
