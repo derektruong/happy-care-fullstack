@@ -26,6 +26,7 @@ const ChatNavigation = () => (
       component={ChatRoom}
       options={{
         headerShown: false,
+        gestureEnabled: false,
       }}
     />
   </Stack.Navigator>

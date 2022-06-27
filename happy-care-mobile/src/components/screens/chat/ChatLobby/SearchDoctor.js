@@ -52,7 +52,7 @@ export const SearchDoctor = ({ navigation }) => {
   const onSelectDoctorHandler = (doctor) => {
     dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
     navigation.navigate(ScreenName.chatRoom, {
-      doctor: doctor,
+      user: doctor,
     });
   };
 

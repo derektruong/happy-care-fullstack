@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Platform } from 'react-native';
 import {
   VStack,
@@ -16,24 +16,24 @@ import { Entypo } from '@expo/vector-icons';
 import { uiActions } from '../../../redux/actions';
 import { userService, doctorsService } from '../../../redux/services';
 import { ScreenName, BottomBarHeight } from '../../../api/common';
-import { socketService } from '../../../api/services';
 
 export const SearchDoctorBySpec = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const { doctorsBySpec } = useSelector((state) => state.doctorsBySpec);
   const { onlineDoctors } = useSelector((state) => state.socket);
   const { itemSpec } = route.params;
 
+  const [doctorsBySpec, setDoctorsBySpec] = useState([]);
+
   useEffect(() => {
     userService.getDoctors();
-    const intervalDoctorsOnline = setInterval(() => {
-      socketService.emitGetDoctorInApp();
-    }, 15000);
-    return () => clearInterval(intervalDoctorsOnline);
   }, []);
 
   useEffect(() => {
-    doctorsService.getDoctorsBySpec(itemSpec.id);
+    const getDoctorsBySpec = async () => {
+      const specDoctors = await doctorsService.getDoctorsBySpec(itemSpec.id);
+      setDoctorsBySpec(specDoctors);
+    };
+    getDoctorsBySpec();
   }, [itemSpec]);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export const SearchDoctorBySpec = ({ route, navigation }) => {
   const onSelectDoctorHandler = (doctor) => {
     dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
     navigation.navigate(ScreenName.chatRoom, {
-      doctor: doctor,
+      user: doctor,
     });
   };
 
@@ -94,14 +94,14 @@ export const SearchDoctorBySpec = ({ route, navigation }) => {
                   size="md"
                   p="2px"
                   source={{
-                    uri: item.profile.avatar,
+                    uri: item.avatar,
                   }}
                 >
-                  {onlineDoctors.includes(item._id) && <Avatar.Badge bg="green.600" />}
+                  {onlineDoctors.includes(item.id) && <Avatar.Badge bg="green.600" />}
                 </Avatar>
                 <VStack alignContent="center">
                   <Text fontSize="12px" fontWeight={500}>
-                    {item.profile.fullname}
+                    {item.fullname}
                   </Text>
                   <Text fontSize="10px">{item.specializations.join(',')}</Text>
                 </VStack>

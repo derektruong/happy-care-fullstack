@@ -3,9 +3,9 @@ import { useDispatch } from 'react-redux';
 import { VStack, Image, Text, FlatList, Pressable, HStack, Spinner, Heading } from 'native-base';
 import { uiActions } from '../../../redux/actions';
 import { newsService } from '../../../redux/services';
-import { ScreenName } from '../../../api/common';
+import { ScreenName, Role } from '../../../api/common';
 
-export const News = ({ navigation }) => {
+export const News = ({ navigation, role }) => {
   const dispatch = useDispatch();
   const [news, setNews] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +51,7 @@ export const News = ({ navigation }) => {
   };
 
   return (
-    <VStack h="67%">
+    <VStack h={role === Role.member ? '67%' : '100%'}>
       <Text h="6%" fontSize="lg" bold color="blue.600" pl="4">
         Tin tức
       </Text>

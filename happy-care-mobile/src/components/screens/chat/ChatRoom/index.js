@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Platform, BackAndroid } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ChatRoomHeader } from './ChatRoomHeader';
@@ -15,6 +16,9 @@ export const ChatRoom = ({ route, navigation }) => {
   const [roomId, setRoomId] = useState(null);
 
   useEffect(() => {
+    if (Platform.OS === 'android') {
+      BackAndroid.addEventListener('hardwareBackPress', () => true);
+    }
     navigation.getParent()?.setOptions({ tabBarStyle: { display: 'none' } });
     return () => navigation.getParent()?.setOptions({ tabBarStyle: undefined });
   }, [navigation]);
@@ -22,8 +26,8 @@ export const ChatRoom = ({ route, navigation }) => {
   useEffect(() => {
     const joinChatRoom = async () => {
       const verifyRoomId = await chatService.verifyRoom({
-        memberId: role === Role.member ? id : route.params.doctor.id,
-        doctorId: role === Role.member ? route.params.doctor.id : id,
+        memberId: role === Role.member ? id : route.params.user.id,
+        doctorId: role === Role.member ? route.params.user.id : id,
       });
 
       if (verifyRoomId) {
@@ -44,11 +48,11 @@ export const ChatRoom = ({ route, navigation }) => {
     };
 
     joinChatRoom();
-  }, [dispatch, id, navigation, role, route.params.doctor.id]);
+  }, [dispatch, id, navigation, role, route.params.user.id]);
 
   return (
     <>
-      <ChatRoomHeader navigation={navigation} route={route} />
+      <ChatRoomHeader navigation={navigation} route={route} roomId={roomId} />
       <MessageList navigation={navigation} route={route} roomId={roomId} />
       <ChatInput navigation={navigation} route={route} roomId={roomId} />
       <KeyboardSpacer />

@@ -30,7 +30,7 @@ export const MemberLobby = ({ navigation }) => {
   const onSelectDoctorHandler = (doctor) => {
     dispatch(uiActions.navigateScreen(ScreenName.chatRoom));
     navigation.navigate(ScreenName.chatRoom, {
-      doctor: doctor,
+      user: doctor,
     });
   };
 
@@ -81,7 +81,7 @@ export const MemberLobby = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         horizontal
       />
-      <ChannelList />
+      <ChannelList navigation={navigation} />
     </VStack>
   );
 };

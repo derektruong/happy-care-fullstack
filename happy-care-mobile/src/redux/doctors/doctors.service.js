@@ -1,7 +1,5 @@
-import { Logger, UserUrl } from '../../api/common';
+import { Logger, UserUrl, UserDefaultProfile } from '../../api/common';
 import { httpService } from '../../api/services';
-import store from '../store';
-import { doctorsAction } from './doctors.slice';
 
 class DoctorsService {
   static getInstance() {
@@ -18,16 +16,17 @@ class DoctorsService {
       const res = await httpService.get(url, params);
       if (res.success) {
         const { doctors } = res.data;
-        store.dispatch(
-          doctorsAction.setDoctors({
-            doctors,
-          })
-        );
+        return doctors.map((doctor) => ({
+          id: doctor._id,
+          fullname: doctor?.profile?.fullname || UserDefaultProfile.fullname,
+          avatar: doctor?.profile?.avatar || UserDefaultProfile.doctorAvatar,
+          specializations: doctor?.specializations || [],
+        }));
       }
-      return [];
     } catch (error) {
       Logger.Error(error.message);
     }
+    return [];
   }
 }
 export const doctorsService = DoctorsService.getInstance();

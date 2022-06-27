@@ -1,13 +1,15 @@
 import React from 'react';
 import { HStack, IconButton, Icon, Text, Avatar } from 'native-base';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
+import { socketService } from '../../../../api/services';
 
 export const ChatRoomHeader = (props) => {
-  const { route, navigation } = props;
+  const { route, navigation, roomId } = props;
 
-  const { doctor } = route.params;
+  const { user } = route.params;
 
   const onBackScreenHandler = () => {
+    socketService.emitLeaveChatRoom({ roomId });
     navigation.goBack();
   };
 
@@ -38,11 +40,11 @@ export const ChatRoomHeader = (props) => {
           p="2px"
           mx="10px"
           source={{
-            uri: doctor.avatar,
+            uri: user.avatar,
           }}
         />
         <Text bold fontSize="14px" color="white">
-          {doctor.fullname}
+          {user.fullname}
         </Text>
       </HStack>
       <HStack>

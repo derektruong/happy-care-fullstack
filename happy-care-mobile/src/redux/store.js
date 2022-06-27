@@ -6,7 +6,6 @@ import userReducer from './user/user.slice';
 import roleReducer from './role/role.slice';
 import specReducer from './specialization/specialization.slice';
 import symptomsReducer from './symptoms/symptoms.slice';
-import doctorsBySpecReducer from './doctors/doctors.slice';
 import chatReducer from './chat/chat.slice';
 
 const store = configureStore({
@@ -18,7 +17,6 @@ const store = configureStore({
     role: roleReducer,
     spec: specReducer,
     symptoms: symptomsReducer,
-    doctorsBySpec: doctorsBySpecReducer,
     chat: chatReducer,
   },
 });

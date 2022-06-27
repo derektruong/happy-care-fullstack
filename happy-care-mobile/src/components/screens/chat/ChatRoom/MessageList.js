@@ -14,7 +14,7 @@ export const MessageList = (props) => {
   const [messages, setMessages] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
-  const { doctor } = route.params;
+  const { user } = route.params;
 
   useEffect(() => {
     const getMessages = async () => {
@@ -29,7 +29,7 @@ export const MessageList = (props) => {
     return () => {
       setMessages([]);
     };
-  }, [doctor.email, email, roomId]);
+  }, [user.email, email, roomId]);
 
   useEffect(() => {
     if (

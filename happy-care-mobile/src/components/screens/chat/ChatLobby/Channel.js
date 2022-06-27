@@ -1,6 +1,5 @@
 import React from 'react';
 import { Text, VStack, HStack, Avatar } from 'native-base';
-import { UserDefaultProfile } from '../../../../api/common';
 
 export const Channel = (props) => {
   const { channel } = props;
@@ -13,12 +12,12 @@ export const Channel = (props) => {
         size="md"
         p="2px"
         source={{
-          uri: channel.avatar || UserDefaultProfile.doctorAvatar,
+          uri: channel.avatar,
         }}
       />
       <VStack alignContent="center">
         <Text bold fontSize="16px">
-          {channel.title}
+          {channel.fullname}
         </Text>
         <Text>{channel.content}</Text>
       </VStack>
