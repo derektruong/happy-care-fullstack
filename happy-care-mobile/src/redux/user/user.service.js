@@ -21,7 +21,7 @@ class UserService {
 
         if (res.success) {
           const user = res.data && res.data.user;
-          const { role, email, background, profile, specializations } = user;
+          const { _id, role, email, background, profile, specializations } = user;
           dispatch(
             userActions.setUserInfo({
               role,
@@ -29,6 +29,7 @@ class UserService {
               background,
               profile,
               specializations,
+              id: _id,
             })
           );
         }

@@ -22,7 +22,7 @@ const BottomTabNavigation = () => (
       tabBarLabelStyle: { fontSize: 13, fontWeight: '500' },
       tabBarStyle: {
         height: BottomBarHeight,
-        position: 'absolute',
+        position: 'relative',
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
       },

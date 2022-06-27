@@ -1,7 +1,6 @@
 import React from 'react';
 import { HStack, IconButton, Icon, Text, Avatar } from 'native-base';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
-import { UserDefaultProfile } from '../../../../api/common';
 
 export const ChatRoomHeader = (props) => {
   const { route, navigation } = props;
@@ -43,7 +42,7 @@ export const ChatRoomHeader = (props) => {
           }}
         />
         <Text bold fontSize="14px" color="white">
-          { doctor.fullname }
+          {doctor.fullname}
         </Text>
       </HStack>
       <HStack>

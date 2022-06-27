@@ -1,21 +1,12 @@
 import React, { useEffect } from 'react';
-import {
-  Text,
-  Pressable,
-  VStack,
-  Heading,
-  FlatList,
-  Avatar,
-  Icon,
-  Input,
-} from 'native-base';
+import { Text, Pressable, VStack, Heading, FlatList, Avatar, Icon, Input } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { Ionicons } from '@expo/vector-icons';
 import { uiActions } from '../../../../redux/actions';
 import { userService } from '../../../../redux/services';
 import { ScreenName } from '../../../../api/common';
 import { socketService } from '../../../../api/services';
-import { ChanelList } from './ChannelList';
+import { ChannelList } from './ChannelList';
 
 export const MemberLobby = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -90,7 +81,7 @@ export const MemberLobby = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         horizontal
       />
-      <ChanelList/>
+      <ChannelList />
     </VStack>
   );
 };

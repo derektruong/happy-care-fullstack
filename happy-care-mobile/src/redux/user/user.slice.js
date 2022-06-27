@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { UserDefaultProfile } from '../../api/common';
 
 const initialState = {
+  id: '',
   role: '',
   email: '',
   specializations: [],
@@ -21,8 +22,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUserInfo: (state, action) => {
-      const { role, email, specializations, background, profile } = action.payload;
+      const { id, role, email, specializations, background, profile } = action.payload;
 
+      state.id = id;
       state.role = role || state.role;
       state.email = email || state.email;
       state.specializations = specializations || state.specializations;

@@ -1,18 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Text, View } from 'native-base';
 import { Image } from 'react-native';
-import { AsyncStoreHelper } from '../../../../api/helper';
+import { useSelector } from 'react-redux';
 
 export const Message = (props) => {
   const { message, userId } = props;
-  const [currentUserId, setCurrentUserId] = useState(null);
+  const { id: currentUserId } = useSelector((state) => state.user);
 
-  useEffect(() => {
-    const initCurrentUser = async () => {
-      setCurrentUserId(await AsyncStoreHelper.getUserId());
-    };
-    initCurrentUser();
-  }, []);
+  let chatContent = null;
+
+  switch (message.type) {
+    case 'text':
+      chatContent = (
+        <Text color={currentUserId === userId ? 'white' : 'black'} borderRadius="8">
+          {message.content}
+        </Text>
+      );
+      break;
+    case 'image':
+      chatContent = (
+        <Image
+          source={{
+            uri: message.content,
+          }}
+          style={{
+            resizeMode: 'contain',
+            flex: 1,
+            aspectRatio: 1,
+          }}
+        />
+      );
+      break;
+    case 'prescription':
+      chatContent = (
+        <Text color={currentUserId ? 'white' : 'black'} borderRadius="8">
+          {message.content}
+        </Text>
+      );
+      break;
+    default:
+      break;
+  }
 
   return (
     <View
@@ -26,26 +54,7 @@ export const Message = (props) => {
       }}
       bg={currentUserId === userId ? 'blue.500' : 'muted.200'}
     >
-      {message.type === 'text' ? (
-        <Text color={currentUserId === userId ? 'white' : 'black'} borderRadius="8">
-          {message.content}
-        </Text>
-      ) : message.type === 'image' ? (
-        <Image
-          source={{
-            uri: message.content,
-          }}
-          style={{
-            resizeMode: 'contain',
-            flex: 1,
-            aspectRatio: 1,
-          }}
-        />
-      ) : (
-        <Text color={currentUserId ? 'white' : 'black'} borderRadius="8">
-          {message.content}
-        </Text>
-      )}
+      {chatContent}
     </View>
   );
 };
