@@ -27,6 +27,8 @@ class WebSocketService {
     this.socket.on(SocketKey.ConnectError, (err) => {
       Logger.Error(`Connect error due to ${err.message}`);
     });
+
+    this.onReceiveMessage();
   }
 
   onReceiveMessage() {

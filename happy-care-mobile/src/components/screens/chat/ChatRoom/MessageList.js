@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { HStack, Spinner, Heading } from 'native-base';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
+import { chatActions } from '../../../../redux/actions';
 import { chatService } from '../../../../redux/services';
 import { Message } from './Message';
 
 export const MessageList = (props) => {
   const { route, roomId } = props;
+  const dispatch = useDispatch();
 
   const { id: currentUserId, email } = useSelector((state) => state.user);
   const { latestMessage, commingMessage } = useSelector((state) => state.chat);
@@ -32,19 +34,16 @@ export const MessageList = (props) => {
   }, [user.email, email, roomId]);
 
   useEffect(() => {
-    if (
-      latestMessage &&
-      latestMessage.room === roomId &&
-      latestMessage.user === currentUserId &&
-      latestMessage._id !== messages[0]._id
-    ) {
+    if (latestMessage && latestMessage.room === roomId && latestMessage.user === currentUserId) {
       setMessages((prevMessages) => [latestMessage, ...prevMessages]);
+      dispatch(chatActions.setLatestMessage(null));
     }
 
     if (commingMessage && commingMessage.user === user.id) {
       setMessages((prevMessages) => [commingMessage, ...prevMessages]);
+      dispatch(chatActions.setCommingMessage(null));
     }
-  }, [commingMessage, currentUserId, latestMessage, messages, roomId, user.id]);
+  }, [commingMessage, currentUserId, dispatch, latestMessage, messages, roomId, user.id]);
 
   const onScrollToTopHandler = async (scroll) => {
     if (currentPage < 0) return;

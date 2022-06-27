@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
-import { Pressable } from 'native-base';
+import { HStack, Spinner, Heading, Pressable } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiActions } from '../../../../redux/actions';
 import { chatService } from '../../../../redux/services';
@@ -12,6 +12,7 @@ export const ChannelList = ({ navigation }) => {
   const { id: currentUserId } = useSelector((state) => state.user);
 
   const [channels, setChannels] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const getContentOfChannel = (lastMessage) => {
@@ -27,6 +28,7 @@ export const ChannelList = ({ navigation }) => {
     };
 
     const getChannels = async () => {
+      setIsLoading(true);
       const listChannel = await chatService.getMyRooms();
       if (listChannel) {
         setChannels(
@@ -55,6 +57,7 @@ export const ChannelList = ({ navigation }) => {
           )
         );
       }
+      setIsLoading(false);
     };
     getChannels();
     return () => {
@@ -70,14 +73,26 @@ export const ChannelList = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAwareFlatList
-      data={channels}
-      renderItem={({ item }) => (
-        <Pressable onPress={() => onSelectChatUser(item)}>
-          <Channel channel={item} />
-        </Pressable>
+    <>
+      {isLoading && (
+        <HStack space={2} justifyContent="center">
+          <Spinner accessibilityLabel="Loading posts" />
+          <Heading color="blue.600" fontSize="md">
+            Đang tải danh sách
+          </Heading>
+        </HStack>
       )}
-      keyExtractor={(item, index) => index.toString()}
-    />
+      {!isLoading && (
+        <KeyboardAwareFlatList
+          data={channels}
+          renderItem={({ item }) => (
+            <Pressable onPress={() => onSelectChatUser(item)}>
+              <Channel channel={item} />
+            </Pressable>
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
+      )}
+    </>
   );
 };
