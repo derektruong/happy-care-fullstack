@@ -9,7 +9,7 @@ export const HCUpdateHeader = (props) => {
     <HStack
       w="100%"
       h="50px"
-      justifyContent={onSaveHandler ? 'space-beetween' : 'flex-start'}
+      justifyContent={onSaveHandler ? 'space-between' : 'flex-start'}
       alignItems="center"
     >
       <IconButton
