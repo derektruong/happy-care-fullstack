@@ -41,7 +41,7 @@ export const Login = ({ navigation }) => {
         socketService.emitJoinApp({ token });
         dispatch(authActions.setLoggedInStatus(!!token));
         dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
-        navigation.navigate(ScreenName.bottomTab);
+        navigation.replace(ScreenName.bottomTab);
       } else {
         setIsLoading(false);
       }

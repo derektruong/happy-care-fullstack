@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Platform } from 'react-native';
 import { VStack, HStack, Heading, KeyboardAvoidingView, Avatar } from 'native-base';
 import { useSelector } from 'react-redux';
@@ -8,6 +8,10 @@ import { BottomBarHeight, Role } from '../../../../api/common';
 
 export const ChatLobby = ({ navigation }) => {
   const { role, profile } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    navigation.getParent()?.setOptions({ tabBarStyle: { display: 'flex' } });
+  }, [navigation]);
 
   return (
     <KeyboardAvoidingView

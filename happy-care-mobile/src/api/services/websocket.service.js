@@ -87,7 +87,7 @@ class WebSocketService {
       };
       this.socket.emit(SocketKey.SendMessage, ackData, (res) => {
         Logger.Info(`Send message:\n${res}`);
-        if (res.success) {
+        if (res && res.success) {
           store.dispatch(
             chatActions.setLatestMessage({
               content,

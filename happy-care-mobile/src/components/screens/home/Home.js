@@ -5,13 +5,14 @@ import { LogBox } from 'react-native';
 import { userService } from '../../../redux/services';
 import { News } from './News';
 import { SymptomsKeyword } from './SymptomsKeyword';
+import { Role } from '../../../api/common';
 
 LogBox.ignoreLogs(["exported from 'deprecated-react-native-prop-types'."]);
 
 export const Home = ({ navigation }) => {
   const dispatch = useDispatch();
 
-  const { profile } = useSelector((state) => state.user);
+  const { role, profile } = useSelector((state) => state.user);
 
   useEffect(() => {
     const setUserInfoById = async () => {
@@ -26,8 +27,8 @@ export const Home = ({ navigation }) => {
         Chào {profile.fullname}
       </Heading>
       <VStack w="100%" h="94%">
-        <SymptomsKeyword navigation={navigation} />
-        <News w="100%" navigation={navigation} />
+        {role === Role.member && <SymptomsKeyword navigation={navigation} />}
+        <News w="100%" navigation={navigation} role={role} />
       </VStack>
     </Box>
   );
