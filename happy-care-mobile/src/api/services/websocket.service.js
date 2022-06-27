@@ -29,6 +29,23 @@ class WebSocketService {
     });
   }
 
+  onReceiveMessage() {
+    if (this.socket) {
+      this.socket.on(SocketKey.ReceiveMessage, (res) => {
+        Logger.Info(`Receive message:\n${JSON.stringify(res)}`);
+        store.dispatch(
+          chatActions.setCommingMessage({
+            _id: uuidv4(),
+            content: res.content,
+            type: res.type,
+            time: res.time,
+            user: res.user,
+          })
+        );
+      });
+    }
+  }
+
   emitJoinApp({ token }) {
     if (this.socket) {
       this.socket.emit(SocketKey.Join, token, (res) => {

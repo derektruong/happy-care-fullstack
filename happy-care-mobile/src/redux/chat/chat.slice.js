@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  commingMessage: {
+    _id: '',
+    time: '',
+    user: '',
+    content: '',
+    type: '',
+  },
   latestMessage: {
     _id: '',
     room: '',
@@ -16,6 +23,9 @@ const chatSlice = createSlice({
   reducers: {
     setLatestMessage: (state, action) => {
       state.latestMessage = action.payload;
+    },
+    setCommingMessage: (state, action) => {
+      state.commingMessage = action.payload;
     },
   },
 });
