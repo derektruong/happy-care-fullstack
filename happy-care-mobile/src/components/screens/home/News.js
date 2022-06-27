@@ -52,7 +52,7 @@ export const News = ({ navigation, role }) => {
 
   return (
     <VStack h={role === Role.member ? '67%' : '100%'}>
-      <Text h="6%" fontSize="lg" bold color="blue.600" pl="4">
+      <Text h="6%" fontSize="lg" bold color="blue.600" pl="4" mt="4">
         Tin tức
       </Text>
       {isLoading && currentPage === null && (
@@ -75,6 +75,7 @@ export const News = ({ navigation, role }) => {
               _pressed={{
                 transform: [{ scale: 0.96 }],
               }}
+              shadow="1"
             >
               <VStack mx="4" mt="2" bgColor="#fff" borderRadius="12" flexDirection="row">
                 <Image

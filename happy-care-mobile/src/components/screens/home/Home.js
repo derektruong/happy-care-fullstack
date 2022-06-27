@@ -23,10 +23,10 @@ export const Home = ({ navigation }) => {
 
   return (
     <Box>
-      <Heading w="100%" h="70px" fontSize="xl" p="4">
+      <Heading w="100%" h="50px" fontSize="xl" lineHeight="xl" pt="2" pl="2">
         Chào {profile.fullname}
       </Heading>
-      <VStack w="100%" h="92%">
+      <VStack w="100%" h="94%">
         {role === Role.member && <SymptomsKeyword navigation={navigation} />}
         <News w="100%" navigation={navigation} role={role} />
       </VStack>
