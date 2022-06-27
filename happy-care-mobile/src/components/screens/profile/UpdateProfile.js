@@ -47,10 +47,10 @@ export const UpdateProfile = ({ navigation }) => {
   const onPickAvatarHandler = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      base64: true,
+      allowsEditing: false,
+      maxWidth: 416,
+      maxHeight: 416,
+      quality: 0.2,
     });
 
     if (!result.cancelled) {

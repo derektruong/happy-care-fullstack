@@ -105,7 +105,7 @@ class WebSocketService {
         userId,
       };
       this.socket.emit(SocketKey.SendMessage, ackData, (res) => {
-        Logger.Info(`Send message:\n${res}`);
+        Logger.Info(`Send message:\n${JSON.stringify(res)}`);
         if (res && res.success) {
           store.dispatch(
             chatActions.setLatestMessage({
