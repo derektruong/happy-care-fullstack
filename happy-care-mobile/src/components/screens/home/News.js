@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
 import { uiActions } from '../../../redux/actions';
 import { newsService } from '../../../redux/services';
@@ -8,19 +8,31 @@ import { ScreenName } from '../../../api/common';
 export const News = ({ navigation }) => {
     const dispatch = useDispatch();
     const { news } = useSelector((state) => state.news)
+    const [page, setPage] = useState(0)
 
     useEffect(() => {
-        newsService.getNews();
+        newsService.getNews(0);
     }, []);
+
+    useEffect(() => {
+        newsService.getNews(page);
+    }, [page]);
 
     const redirectWebNews = (link) => {
         dispatch(uiActions.navigateScreen(ScreenName.webNews));
         navigation.navigate(ScreenName.webNews, { link });
     }
 
+    const loadMoreData = () => {
+        console.log("load")
+        setPage(page + 1)
+    }
+
     return (
         <FlatList
             data={news}
+            onEndReached={loadMoreData}
+            onEndReachedThreshold={0.9}
             keyExtractor={(item, index) => index + 1}
             renderItem={({ item }) => (
                 <Pressable onPress={() => redirectWebNews(item.link)} bg="muted.50"

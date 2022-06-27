@@ -10,7 +10,7 @@ const newSlice = createSlice({
     reducers: {
         setNews: (state, action) => {
             const { news } = action.payload;
-            state.news = news;
+            state.news = [...state.news, ...news];
         }
     }
 });

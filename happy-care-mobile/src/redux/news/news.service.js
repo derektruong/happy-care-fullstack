@@ -14,11 +14,11 @@ class NewsService {
         return this.instance;
     }
 
-    async getNews() {
+    async getNews(page) {
         try {
             const url = `${NewsUrl}`
             const res = await httpService.get(url, {
-                start: 10,
+                start: page * 10,
                 limit: 10,
             });
 
