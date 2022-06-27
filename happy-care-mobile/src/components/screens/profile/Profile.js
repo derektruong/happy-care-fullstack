@@ -36,9 +36,9 @@ export const Profile = ({ navigation }) => {
   return (
     <Box>
       <VStack w="100%" h="100%">
-        <Box w="100%" h="30%" bgColor="blue.700" roundedBottomRight="2xl" roundedBottomLeft="2xl">
+        <Box w="100%" h="35%" bgColor="blue.700" roundedBottomRight="2xl" roundedBottomLeft="2xl">
           <Center h="100%">
-            <Heading my="2" size="md" color="amber.100" fontWeight={600}>
+            <Heading my="2" size="lg" color="amber.100" fontWeight={600} pt="2">
               {role === Role.doctor ? 'Bác sĩ' : 'Thành viên'}
             </Heading>
             <Avatar
@@ -46,13 +46,14 @@ export const Profile = ({ navigation }) => {
               alignSelf="center"
               size="2xl"
               p="5px"
+              mb="4"
               source={{
                 uri: profile.avatar,
               }}
             >
               Avatar
             </Avatar>
-            <Heading mt="2" size="xl" color="amber.100" fontWeight={600}>
+            <Heading mt="2" size="xl" color="amber.100" fontWeight={600} mb="4">
               {profile.fullname}
             </Heading>
           </Center>
@@ -65,7 +66,7 @@ export const Profile = ({ navigation }) => {
             onPress={onUpdateProfileHandler}
             _icon={{
               color: 'orange.50',
-              size: 'md',
+              size: 'lg',
             }}
             _pressed={{
               bg: 'blue.200:alpha.20',
@@ -82,7 +83,7 @@ export const Profile = ({ navigation }) => {
             }}
           />
         </Box>
-        <Box w="100%" h="70%">
+        <Box w="100%" h="65%">
           {role === Role.doctor && (
             <VStack w="70%" h="70%" alignSelf="center" alignItems="flex-start" mt={10} space={5}>
               <HStack justifyContent="center" alignItems="center" space={8}>
