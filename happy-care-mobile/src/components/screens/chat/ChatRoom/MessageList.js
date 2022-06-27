@@ -9,7 +9,7 @@ export const MessageList = (props) => {
   const { route, roomId } = props;
 
   const { id: currentUserId, email } = useSelector((state) => state.user);
-  const { latestMessage } = useSelector((state) => state.chat);
+  const { latestMessage, commingMessage } = useSelector((state) => state.chat);
 
   const [messages, setMessages] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -40,7 +40,11 @@ export const MessageList = (props) => {
     ) {
       setMessages((prevMessages) => [latestMessage, ...prevMessages]);
     }
-  }, [currentUserId, latestMessage, messages, roomId]);
+
+    if (commingMessage && commingMessage.user === user.id) {
+      setMessages((prevMessages) => [commingMessage, ...prevMessages]);
+    }
+  }, [commingMessage, currentUserId, latestMessage, messages, roomId, user.id]);
 
   const onScrollToTopHandler = async (scroll) => {
     if (currentPage < 0) return;
