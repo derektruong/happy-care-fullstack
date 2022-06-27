@@ -13,7 +13,7 @@ export const ChatInput = (props) => {
   const [messageType, setMessageType] = useState('text');
 
   const onChangeMessageContent = (text) => {
-    setMessageContent(text.trim());
+    setMessageContent(text);
     setMessageType(MessageType.text);
   };
 
@@ -21,7 +21,7 @@ export const ChatInput = (props) => {
     if (messageContent.length > 0) {
       socketService.emitSendMessage({
         roomId,
-        content: messageContent,
+        content: messageContent.trim(),
         type: messageType,
         userId: currentUserId,
       });
@@ -30,7 +30,7 @@ export const ChatInput = (props) => {
   };
 
   return (
-    <HStack w="90%" h="70px" mb={2} justifyContent="space-beetween" alignItems="center">
+    <HStack w="90%" h="70px" mb={2} justifyContent="space-between" alignItems="center">
       <IconButton
         icon={<Icon as={Ionicons} name="image" />}
         onPress={onBackScreenHandler}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'native-base';
+import { Text, Box } from 'native-base';
 import { Image } from 'react-native';
 import { useSelector } from 'react-redux';
 
@@ -43,18 +43,19 @@ export const Message = (props) => {
   }
 
   return (
-    <View
+    <Box
       style={{
         alignSelf: currentUserId === userId ? 'flex-end' : 'flex-start',
         padding: 10,
         margin: 10,
         borderRadius: 10,
-        width: '70%',
+        width: 'auto',
+        maxWidth: '60%',
         flexDirection: 'row',
       }}
       bg={currentUserId === userId ? 'blue.500' : 'muted.200'}
     >
       {chatContent}
-    </View>
+    </Box>
   );
 };
