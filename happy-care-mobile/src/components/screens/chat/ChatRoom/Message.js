@@ -44,9 +44,9 @@ export const Message = (props) => {
 
   return (
     <Box
+      p={2}
       style={{
         alignSelf: currentUserId === userId ? 'flex-end' : 'flex-start',
-        padding: 10,
         margin: 10,
         borderRadius: 10,
         width: 'auto',
