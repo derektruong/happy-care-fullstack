@@ -1,7 +1,9 @@
+import 'react-native-get-random-values';
 import io from 'socket.io-client';
+import { v4 as uuidv4 } from 'uuid';
 import { ServerUrl, SocketKey, Logger } from '../common';
 import store from '../../redux/store';
-import { socketActions } from '../../redux/actions';
+import { socketActions, chatActions } from '../../redux/actions';
 
 class WebSocketService {
   static getInstance() {
@@ -49,6 +51,52 @@ class WebSocketService {
         if (res.success && res.data.doctors) {
           const doctors = res.data.doctors.map((doctor) => doctor.userId);
           store.dispatch(socketActions.setOnlineDoctors(doctors));
+        }
+      });
+    }
+  }
+
+  emitJoinChatRoom({ roomId, userId }) {
+    if (this.socket) {
+      const ackData = {
+        roomId,
+        userId,
+      };
+      this.socket.emit(SocketKey.JoinChatRoom, ackData, (res) => {
+        Logger.Info(`Join chat room:\n${JSON.stringify(res)}`);
+      });
+    }
+  }
+
+  emitLeaveChatRoom({ roomId }) {
+    if (this.socket) {
+      const ackData = roomId;
+      this.socket.emit(SocketKey.LeaveChatRoom, ackData, (res) => {
+        Logger.Info(`Leave chat room:\n${JSON.stringify(res)}`);
+      });
+    }
+  }
+
+  emitSendMessage({ roomId, content, type, userId }) {
+    if (this.socket) {
+      const ackData = {
+        roomId,
+        content,
+        type,
+        userId,
+      };
+      this.socket.emit(SocketKey.SendMessage, ackData, (res) => {
+        Logger.Info(`Send message:\n${res}`);
+        if (res.success) {
+          store.dispatch(
+            chatActions.setLatestMessage({
+              content,
+              type,
+              _id: uuidv4(),
+              room: roomId,
+              user: userId,
+            })
+          );
         }
       });
     }

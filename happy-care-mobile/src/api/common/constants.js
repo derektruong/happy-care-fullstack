@@ -44,6 +44,12 @@ export const ScreenName = Object.freeze({
   chatRoom: 'chatRoom',
 });
 
+export const MessageType = Object.freeze({
+  text: 'text',
+  image: 'image',
+  prescription: 'prescription',
+});
+
 export const UiStatus = Object.freeze({
   loading: 'loading',
   success: 'success',

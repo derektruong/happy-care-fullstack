@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Box, Heading, VStack, Text } from 'native-base';
+import { Box, Heading, VStack } from 'native-base';
+import { LogBox } from 'react-native';
 import { userService } from '../../../redux/services';
-import { BottomBarHeight } from '../../../api/common';
 import { News } from './News';
 import { SymptomsKeyword } from './SymptomsKeyword';
+
+LogBox.ignoreLogs(["exported from 'deprecated-react-native-prop-types'."]);
 
 export const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -18,18 +20,13 @@ export const Home = ({ navigation }) => {
     setUserInfoById();
   }, [dispatch]);
 
-  // const getUsersInAppHandler = () => {
-  //   socketService.emitGetUserInApp();
-  // };
-
   return (
-    <Box mb={BottomBarHeight + 10}>
-      <Heading fontSize="xl" p="4" pb="3">
+    <Box>
+      <Heading w="100%" h="6%" fontSize="xl" p="4">
         Chào {profile.fullname}
       </Heading>
-      <VStack w="100%" h="100%">
+      <VStack w="100%" h="94%">
         <SymptomsKeyword navigation={navigation} />
-        <Text fontSize="lg" bold color='purple.600' pl='4'>Tin tức</Text>
         <News w="100%" navigation={navigation} />
       </VStack>
     </Box>

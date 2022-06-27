@@ -1,33 +1,46 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { HStack, Spinner, Heading } from 'native-base';
 import { KeyboardAwareFlatList } from 'react-native-keyboard-aware-scroll-view';
 import { chatService } from '../../../../redux/services';
 import { Message } from './Message';
 
 export const MessageList = (props) => {
-  const { route } = props;
+  const { route, roomId } = props;
 
-  const { email } = useSelector((state) => state.user);
+  const { id: currentUserId, email } = useSelector((state) => state.user);
+  const { latestMessage } = useSelector((state) => state.chat);
+
   const [messages, setMessages] = useState([]);
-  const [room, setRoom] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { doctor } = route.params;
 
   useEffect(() => {
     const getMessages = async () => {
-      const rooms = await chatService.getMyRooms();
-      const selectedRoom = rooms.filter((r) => r.name === `${email}, ${doctor.email}`);
-
-      const roomId = selectedRoom.length > 0 ? selectedRoom[0]._id : null;
+      setIsLoading(true);
       if (roomId !== null) {
-        setRoom(roomId);
         const initMessages = await chatService.getMessagesByRoomId(roomId, 0, 15);
         setMessages(initMessages);
       }
+      setIsLoading(false);
     };
     getMessages();
-  }, [doctor.email, email]);
+    return () => {
+      setMessages([]);
+    };
+  }, [doctor.email, email, roomId]);
+
+  useEffect(() => {
+    if (
+      latestMessage &&
+      latestMessage.room === roomId &&
+      latestMessage.user === currentUserId &&
+      latestMessage._id !== messages[0]._id
+    ) {
+      setMessages((prevMessages) => [latestMessage, ...prevMessages]);
+    }
+  }, [currentUserId, latestMessage, messages, roomId]);
 
   const onScrollToTopHandler = async (scroll) => {
     if (currentPage < 0) return;
@@ -35,7 +48,7 @@ export const MessageList = (props) => {
     setIsLoading(true);
     if (scroll.nativeEvent.velocity.y > 0) {
       const loadedMessages = await chatService.getMessagesByRoomId(
-        room,
+        roomId,
         (currentPage + 1) * 15,
         15
       );
@@ -50,16 +63,26 @@ export const MessageList = (props) => {
   };
 
   return (
-    <KeyboardAwareFlatList
-      inverted
-      data={messages}
-      renderItem={({ item }) => <Message message={item} userId={item.user} />}
-      keyExtractor={(item) => item._id}
-      onScrollEndDrag={onScrollToTopHandler}
-      maintainVisibleContentPosition={{
-        minIndexForVisible: 0,
-      }}
-      showsVerticalScrollIndicator={false}
-    />
+    <>
+      {isLoading && (
+        <HStack space={2} justifyContent="center">
+          <Spinner accessibilityLabel="Loading posts" />
+          <Heading color="blue.600" fontSize="md">
+            Đang tải
+          </Heading>
+        </HStack>
+      )}
+      <KeyboardAwareFlatList
+        inverted
+        data={messages}
+        renderItem={({ item }) => <Message message={item} userId={item.user} />}
+        keyExtractor={(item, index) => index.toString()}
+        onScrollEndDrag={onScrollToTopHandler}
+        maintainVisibleContentPosition={{
+          minIndexForVisible: 0,
+        }}
+        showsVerticalScrollIndicator={false}
+      />
+    </>
   );
 };
