@@ -1,8 +1,10 @@
 /* eslint-disable camelcase */
 import 'react-native-gesture-handler';
 import React from 'react';
+import { LogBox } from 'react-native';
 import { Provider } from 'react-redux';
 import { NativeBaseProvider, extendTheme } from 'native-base';
+import { SSRProvider } from '@react-aria/ssr';
 import {
   useFonts,
   Poppins_100Thin,
@@ -26,6 +28,9 @@ import {
 } from '@expo-google-fonts/poppins';
 import store from './src/redux/store';
 import MainNavigator from './src/components/navigator';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); // Ignore all log notifications
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -100,11 +105,13 @@ const App = () => {
   });
   return (
     fontsLoaded && (
-      <NativeBaseProvider theme={theme}>
-        <Provider store={store}>
-          <MainNavigator />
-        </Provider>
-      </NativeBaseProvider>
+      <SSRProvider>
+        <NativeBaseProvider theme={theme}>
+          <Provider store={store}>
+            <MainNavigator />
+          </Provider>
+        </NativeBaseProvider>
+      </SSRProvider>
     )
   );
 };

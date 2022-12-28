@@ -5,7 +5,7 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { ChatRoomHeader } from './ChatRoomHeader';
 import { MessageList } from './MessageList';
 import { ChatInput } from './ChatInput';
-import { socketService } from '../../../../api/services';
+import WebSocketService from '../../../../api/services/websocket.service';
 import { chatService } from '../../../../redux/services';
 import { uiActions } from '../../../../redux/actions';
 import { Role } from '../../../../api/common';
@@ -17,7 +17,7 @@ export const ChatRoom = ({ route, navigation }) => {
 
   useEffect(() => {
     const handleBackButtonClick = () => {
-      socketService.emitLeaveChatRoom({
+      WebSocketService.emitLeaveChatRoom({
         roomId,
       });
 
@@ -41,7 +41,7 @@ export const ChatRoom = ({ route, navigation }) => {
       });
 
       if (verifyRoomId) {
-        socketService.emitJoinChatRoom({
+        WebSocketService.emitJoinChatRoom({
           userId: id,
           roomId: verifyRoomId,
         });

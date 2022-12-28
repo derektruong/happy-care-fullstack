@@ -1,5 +1,5 @@
 import { Logger, SymptomsURL } from '../../api/common';
-import { httpService } from '../../api/services';
+import HttpService from '../../api/services/http.service';
 import store from '../store';
 import { symptomsAction } from './symptoms.slice';
 
@@ -15,7 +15,7 @@ class SymptomsService {
     try {
       const url = `${SymptomsURL}`;
       const params = null;
-      const res = await httpService.get(url, params);
+      const res = await HttpService.get(url, params);
       if (res.success) {
         const symptoms = res.data.keywords;
         store.dispatch(

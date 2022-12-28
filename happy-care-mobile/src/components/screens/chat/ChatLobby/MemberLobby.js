@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { uiActions } from '../../../../redux/actions';
 import { userService } from '../../../../redux/services';
 import { ScreenName } from '../../../../api/common';
-import { socketService } from '../../../../api/services';
+import WebSocketService from '../../../../api/services/websocket.service';
 import { ChannelList } from './ChannelList';
 
 export const MemberLobby = ({ navigation }) => {
@@ -17,7 +17,7 @@ export const MemberLobby = ({ navigation }) => {
     userService.getDoctors();
 
     const intervalDoctorsOnline = setInterval(() => {
-      socketService.emitGetDoctorInApp();
+      WebSocketService.emitGetDoctorInApp();
     }, 15000);
     return () => clearInterval(intervalDoctorsOnline);
   }, []);

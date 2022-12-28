@@ -1,15 +1,14 @@
 import React from 'react';
-import { Text, VStack, Box, Heading, Center } from 'native-base';
+import { VStack, Box, Heading } from 'native-base';
+import { MedicineList } from '../chat/ChatRoom/MedicineList';
 
 export const Medicine = () => (
   <Box>
     <Heading fontSize="xl" p="4" pb="3">
-      Quản lý thuốc
+      Cửa hàng thuốc
     </Heading>
-    <VStack w="100%" h="90%">
-      <Center h="100%">
-        <Text color="black">Trang quản lý thuốc</Text>
-      </Center>
+    <VStack w="100%" h="90%" px={3}>
+      <MedicineList />
     </VStack>
   </Box>
 );

@@ -1,5 +1,5 @@
 import { Logger, NewsUrl } from '../../api/common';
-import { httpService } from '../../api/services';
+import HttpService from '../../api/services/http.service';
 
 class NewsService {
   static getInstance() {
@@ -13,7 +13,7 @@ class NewsService {
   async getNews({ start, limit }) {
     try {
       const url = `${NewsUrl}`;
-      const res = await httpService.get(url, {
+      const res = await HttpService.get(url, {
         start,
         limit,
       });

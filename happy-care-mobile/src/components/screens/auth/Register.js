@@ -1,5 +1,5 @@
 import { omit } from 'lodash';
-import * as validator from 'validator';
+import validator from 'validator';
 import React, { useState } from 'react';
 import { Center, Box, Heading, VStack, FormControl, Input, Button, Image, Text } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';

@@ -1,5 +1,5 @@
 import { Logger, UserUrl, UserDefaultProfile } from '../../api/common';
-import { httpService } from '../../api/services';
+import HttpService from '../../api/services/http.service';
 
 class DoctorsService {
   static getInstance() {
@@ -13,7 +13,7 @@ class DoctorsService {
     try {
       const url = `${UserUrl}/get-doctors`;
       const params = { specId };
-      const res = await httpService.get(url, params);
+      const res = await HttpService.get(url, params);
       if (res.success) {
         const { doctors } = res.data;
         return doctors.map((doctor) => ({
