@@ -2,7 +2,8 @@ import store from '../store';
 import { UserUrl, Role, ScreenName } from '../../api/common';
 import { SecureStoreHelper, AsyncStoreHelper } from '../../api/helper';
 import { authActions, uiActions, userActions } from '../actions';
-import { httpService, socketService } from '../../api/services';
+import HttpService from '../../api/services/http.service';
+import WebSocketService from '../../api/services/websocket.service';
 
 class AuthService {
   static getInstance() {
@@ -24,7 +25,7 @@ class AuthService {
 
     try {
       const url = `${UserUrl}`;
-      const res = await httpService.post(url, data, false);
+      const res = await HttpService.post(url, data, false);
 
       if (res.success === true) {
         store.dispatch(
@@ -51,12 +52,12 @@ class AuthService {
     const data = { email, password };
     try {
       const url = `${UserUrl}/login`;
-      const res = await httpService.post(url, data, false);
+      const res = await HttpService.post(url, data, false);
 
       if (res.success === true) {
         const token = res.data && res.data.token;
         await SecureStoreHelper.setAuthBearerToken(token);
-        socketService.emitJoinApp({ token });
+        WebSocketService.emitJoinApp({ token });
 
         store.dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
         store.dispatch(
@@ -97,7 +98,7 @@ class AuthService {
     try {
       SecureStoreHelper.deleteAuthBearerToken();
       AsyncStoreHelper.removeUserId();
-      socketService.emitDisconnect();
+      WebSocketService.emitDisconnect();
 
       store.dispatch(userActions.resetUserInfo());
       store.dispatch(

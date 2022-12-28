@@ -6,14 +6,6 @@ import store from '../../redux/store';
 import { socketActions, chatActions } from '../../redux/actions';
 
 class WebSocketService {
-  static getInstance() {
-    if (!this.instance) {
-      this.instance = new WebSocketService();
-    }
-
-    return this.instance;
-  }
-
   constructor() {
     this.socket = io(ServerUrl, {
       transports: ['websocket'],
@@ -129,4 +121,4 @@ class WebSocketService {
   }
 }
 
-export const socketService = WebSocketService.getInstance();
+export default new WebSocketService();

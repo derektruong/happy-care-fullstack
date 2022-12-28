@@ -17,6 +17,10 @@ export const UserDefaultProfile = Object.freeze({
   doctorAvatar: 'https://cdn-icons-png.flaticon.com/512/921/921130.png',
 });
 
+export const MedicineDefaultImage = Object.freeze({
+  thumbnail: 'https://cdn-icons-png.flaticon.com/512/4320/4320344.png',
+});
+
 export const ScreenName = Object.freeze({
   login: 'login',
   register: 'register',

@@ -1,7 +1,7 @@
 import React from 'react';
 import { HStack, IconButton, Icon, Text, Avatar } from 'native-base';
 import { Entypo, FontAwesome } from '@expo/vector-icons';
-import { socketService } from '../../../../api/services';
+import WebSocketService from '../../../../api/services/websocket.service';
 
 export const ChatRoomHeader = (props) => {
   const { route, navigation, roomId } = props;
@@ -9,7 +9,7 @@ export const ChatRoomHeader = (props) => {
   const { user } = route.params;
 
   const onBackScreenHandler = () => {
-    socketService.emitLeaveChatRoom({ roomId });
+    WebSocketService.emitLeaveChatRoom({ roomId });
     navigation.goBack();
   };
 

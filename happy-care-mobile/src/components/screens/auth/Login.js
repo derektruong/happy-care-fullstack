@@ -20,7 +20,7 @@ import { authService } from '../../../redux/services';
 import { HCIcon } from '../../../assets/images';
 import { AppName, ScreenName } from '../../../api/common';
 import { SecureStoreHelper, JwtHelper } from '../../../api/helper';
-import { socketService } from '../../../api/services';
+import WebSocketService from '../../../api/services/websocket.service';
 
 export const Login = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -38,7 +38,7 @@ export const Login = ({ navigation }) => {
         return;
       }
       if (token) {
-        socketService.emitJoinApp({ token });
+        WebSocketService.emitJoinApp({ token });
         dispatch(authActions.setLoggedInStatus(!!token));
         dispatch(uiActions.navigateScreen(ScreenName.bottomTab));
         navigation.replace(ScreenName.bottomTab);

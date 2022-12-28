@@ -2,14 +2,6 @@ import SecureStoreHelper from '../helper/secure-store.helper';
 import { Logger } from '../common';
 
 class HttpService {
-  static getInstance() {
-    if (!this.instance) {
-      this.instance = new HttpService();
-    }
-
-    return this.instance;
-  }
-
   initBasicHeader() {
     return {
       Accept: 'application/json',
@@ -87,7 +79,7 @@ class HttpService {
   }
 }
 
-export const httpService = HttpService.getInstance();
+export default new HttpService();
 
 function convertParams(params) {
   if (!params) {

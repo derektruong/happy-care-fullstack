@@ -33,7 +33,7 @@ export const Message = (props) => {
       break;
     case 'prescription':
       chatContent = (
-        <Text color={currentUserId ? 'white' : 'black'} borderRadius="8">
+        <Text color={currentUserId === userId ? 'white' : 'black'} borderRadius="8">
           {message.content}
         </Text>
       );

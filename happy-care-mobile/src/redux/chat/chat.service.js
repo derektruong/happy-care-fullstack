@@ -1,5 +1,5 @@
 import { MessagesURL, RoomsURL, Logger } from '../../api/common';
-import { httpService } from '../../api/services';
+import HttpService from '../../api/services/http.service';
 
 class ChatService {
   static getInstance() {
@@ -13,7 +13,7 @@ class ChatService {
   async verifyRoom({ memberId, doctorId }) {
     try {
       const url = `${RoomsURL}/verify-room`;
-      const res = await httpService.post(url, {
+      const res = await HttpService.post(url, {
         memberId,
         doctorId,
       });
@@ -30,7 +30,7 @@ class ChatService {
   async getMyRooms() {
     try {
       const url = `${RoomsURL}/me`;
-      const res = await httpService.get(url);
+      const res = await HttpService.get(url);
 
       if (res.success) {
         return res.data.rooms;
@@ -43,7 +43,7 @@ class ChatService {
   async getMessagesByRoomId(roomId, start, limit) {
     try {
       const url = `${MessagesURL}/${roomId}`;
-      const res = await httpService.get(url, {
+      const res = await HttpService.get(url, {
         start: start,
         limit: limit,
       });

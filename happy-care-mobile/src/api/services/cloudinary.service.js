@@ -1,16 +1,8 @@
 import * as FileSystem from 'expo-file-system';
-import { httpService } from './http.service';
+import HttpService from './http.service';
 import { CLOUDINARY_URL, CloudinaryCloudName, CloudinaryUploadPreset } from '../common';
 
 class CloudinaryService {
-  static getInstance() {
-    if (!this.instance) {
-      this.instance = new CloudinaryService();
-    }
-
-    return this.instance;
-  }
-
   async uploadImage(imageUri) {
     const imgBase64 = await FileSystem.readAsStringAsync(imageUri, { encoding: 'base64' });
 
@@ -23,9 +15,9 @@ class CloudinaryService {
     data.append('upload_preset', CloudinaryUploadPreset);
     data.append('cloud_name', CloudinaryCloudName);
 
-    const res = await httpService.post(CLOUDINARY_URL, data, false);
+    const res = await HttpService.post(CLOUDINARY_URL, data, false);
     return res.url;
   }
 }
 
-export const cloudinaryService = CloudinaryService.getInstance();
+export default new CloudinaryService();

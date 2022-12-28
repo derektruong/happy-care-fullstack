@@ -1,8 +1,9 @@
 import _ from 'lodash';
-import { Logger, UserUrl, UserDefaultProfile } from '../../api/common';
+import { Logger, UserDefaultProfile, UserUrl } from '../../api/common';
 import store from '../store';
-import { uiActions, userActions, roleActions } from '../actions';
-import { httpService, cloudinaryService } from '../../api/services';
+import { roleActions, uiActions, userActions } from '../actions';
+import HttpService from '../../api/services/http.service';
+import CloudinaryService from '../../api/services/cloudinary.service';
 
 class UserService {
   static getInstance() {
@@ -17,7 +18,7 @@ class UserService {
     return async (dispatch) => {
       try {
         const url = `${UserUrl}/me`;
-        const res = await httpService.get(url, null);
+        const res = await HttpService.get(url, null);
 
         if (res.success) {
           const user = res.data && res.data.user;
@@ -48,7 +49,7 @@ class UserService {
     return async (dispatch) => {
       const state = store.getState();
       if (userInfo.avatar && userInfo.avatar !== state.user.profile.avatar) {
-        const avatarUrl = await cloudinaryService.uploadImage(userInfo.avatar);
+        const avatarUrl = await CloudinaryService.uploadImage(userInfo.avatar);
         userInfo.avatar = avatarUrl;
       }
 
@@ -64,7 +65,7 @@ class UserService {
 
       try {
         const url = `${UserUrl}/me`;
-        const res = await httpService.patch(url, updateData);
+        const res = await HttpService.patch(url, updateData);
 
         if (res.success) {
           dispatch(userActions.setUserProfile(updateData));
@@ -90,21 +91,18 @@ class UserService {
     try {
       const url = `${UserUrl}/get-doctors`;
       const params = specId || null;
-      const res = await httpService.get(url, params);
+      const res = await HttpService.get(url, params);
       if (res.success) {
         const { doctors } = res.data;
         store.dispatch(
           roleActions.setDoctors({
-            doctors: doctors.map((dt) => {
-              const doctor = {
-                id: _.get(dt, '_id', ''),
-                fullname: _.get(dt, 'profile.fullname', ''),
-                specializations: _.get(dt, 'specializations', []),
-                avatar: _.get(dt, 'profile.avatar', UserDefaultProfile.doctorAvatar),
-                email: _.get(dt, 'email', ''),
-              };
-              return doctor;
-            }),
+            doctors: doctors.map((dt) => ({
+              id: _.get(dt, '_id', ''),
+              fullname: _.get(dt, 'profile.fullname', ''),
+              specializations: _.get(dt, 'specializations', []),
+              avatar: _.get(dt, 'profile.avatar', UserDefaultProfile.doctorAvatar),
+              email: _.get(dt, 'email', ''),
+            })),
           })
         );
       }
